@@ -1,0 +1,22 @@
+.contact-c-bg {
+    background-image:linear-gradient(rgba(0, 0, 0, 0.07), rgba(0, 0, 0, 0.652)), url("https://images.unsplash.com/photo-1579129999692-3169ee53bcf5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1489&q=80");
+    background-repeat: no-repeat, repeat;
+    background-color: #cccccc;
+    background-size: cover;
+  } 
+.mapouter{position:relative;text-align:right;height:500px;width:600px;}
+.gmap_canvas {overflow:hidden;background:none!important;height:500px;width:600px;}  
+#gmap_canvas{ width: 100%; height: 100%;float: left;}
+
+@media only screen and (min-width: 320px) and (max-width: 400px) {
+  #gmap_canvas{width: 360px;}
+}
+@media only screen and (min-width: 400px) and (max-width: 760px) {
+  #gmap_canvas{width: 414px;}
+}
+@media only screen and (min-width: 760px) and (max-width: 992px) {
+  
+}
+@media only screen and (min-width: 923px) and (max-width: 1024px) {
+
+}

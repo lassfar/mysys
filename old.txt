@@ -1,0 +1,138 @@
+
+
+      <!-- <li class="col-lg-6 col-md-6 col-12">
+        <a class="nav-link" id="tech-tab" data-toggle="tab" href="#tech" role="tab" aria-controls="tech" aria-selected="true">
+          <div class="text-center">
+            <span>Nouvelle Technologie IT</span>
+          </div>
+        </a>
+      </li>
+      
+      <li class="col-lg-6 col-md-6 col-12">
+        <a class="nav-link" id="gestion-tab" data-toggle="tab" href="#gestion" role="tab" aria-controls="gestion" aria-selected="true">
+          <div class="text-center">
+            <span>Gestion de projets, Management et Organisations</span>
+          </div>
+        </a>
+      </li> -->
+
+
+      
+
+            <!-- card -->
+            <div class="t-card">
+              <!-- card-header -->
+              <div class="t-card-header">
+                <img class="t-card-img" src="../../../assets/img/angular.jpg" alt="card-img">
+                <span class="t-card-title">Angular 8 - Réaliser un projet e-commerce from scratch</span>
+                <span>
+                  Lorem ipsum dolor sit ..
+                </span>
+                <small class="text-secondary w-100 py-1">
+                  John Doe
+                </small>
+                <span class="badge badge-warning">
+                  Non certifiante
+                </span>
+              </div>
+              <!-- card-content -->
+              <div class="t-card-content">
+                <span class="title h6 font-weight-bold">Angular 8 - Réaliser un projet e-commerce from scratch</span>
+                <span class="description">
+                  Lorem ipsum dolor sit amet consectetur, 
+                  adipisicing elit. Fugiat iure exercitationem animi
+                  architecto quasi! Dolore.
+                </span>
+                
+                <small class="text-secondary w-100 py-1">
+                  <span>Formateur : </span>
+                  <strong>John Doe</strong>
+                </small>
+                
+                <span class="btn btn-light btn-sm d-block">
+                  <span><router-link to="/detail-formation">Plus de détails</router-link></span>
+                </span>
+
+              </div>
+              <!-- card-content -->
+
+            </div>
+            <!-- end-card -->
+
+            <!-- card -->
+            <div class="t-card">
+              <!-- card-header -->
+              <div class="t-card-header">
+                <img class="t-card-img" src="../../../assets/img/vue.jpg" alt="card-img">
+                <span class="t-card-title">Vue JS - Le framework de javascript le plus populaire en 2019</span>
+                <span class="t-card-desc">
+                  Lorem ipsum dolor sit
+                </span>
+                <small class="text-secondary w-100 py-1">
+                  John Doe
+                </small>
+                <span class="badge badge-success">
+                  Certifiante
+                </span>
+              </div>
+              <!-- card-content -->
+              <div class="t-card-content">
+                <span class="title h6 font-weight-bold">Vue JS - Le framework de javascript le plus populaire en 2019</span>
+                <span class="description">
+                  Lorem ipsum dolor sit amet consectetur, 
+                  adipisicing elit. Fugiat iure exercitationem animi
+                  architecto quasi! Dolore.
+                </span>
+
+                <small class="text-secondary w-100 py-1">
+                  <span>Formateur : </span>
+                  <strong>John Doe</strong>
+                </small>
+                
+                <span class="btn btn-light btn-sm d-block">
+                  <span><router-link to="/detail-formation">Plus de détails</router-link></span>
+                </span>
+
+              </div>        
+              <!-- end-card-content -->
+
+            </div>
+            <!-- end-card -->
+
+            <!-- card -->
+            <div class="t-card">
+              <!-- card-header -->
+              <div class="t-card-header">
+                <img class="t-card-img" src="../../../assets/bg/laravel.jpg" alt="card-img">
+                <span class="t-card-title">Laravel 8 - Le framework le plus performant sur le backend des applications</span>
+                <span>
+                  Lorem ipsum dolor sit ..
+                </span>
+                <small class="text-secondary w-100 py-1">
+                  John Doe
+                </small>
+                <span class="badge badge-success">
+                  Certifiante
+                </span>
+              </div>
+              <!-- card-content -->
+              <div class="t-card-content">
+                <span class="title h6 font-weight-bold">Laravel 8 - Le framework le plus performant sur le backend des applications</span>
+                <span class="description">
+                  Lorem ipsum dolor sit amet consectetur, 
+                  adipisicing elit. Fugiat iure exercitationem animi
+                  architecto quasi! Dolore.
+                </span>
+
+                <small class="text-secondary w-100 py-1">
+                  <span>Formateur : </span>
+                  <strong>John Doe</strong>
+                </small>
+                
+                <span class="btn btn-light btn-sm d-block">
+                  <span><router-link to="/detail-formation">Plus de détails</router-link></span>
+                </span>
+
+              </div>              
+            </div>
+            <!-- end-card -->

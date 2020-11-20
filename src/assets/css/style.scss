@@ -1,0 +1,255 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&Comfortaa:wght@300&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+$blue: #46b3e6;
+$lightblue: #dff6f0;
+$indigo: #6610f2;
+$purple: #6f42c1;
+$pink: #e83e8c;
+$red: #dc3545;
+$orange: #fd7e14;
+$yellow: #ffc107;
+$green: #28a745;
+$teal: #20c997;
+$cyan: #17a2b8;
+$white: #fff;
+$gray: #6c757d;
+$graydark: #495158;
+$primary: #007bff;
+$secondary: #6c757d;
+$success: #28a745;
+$info: #17a2b8;
+$warning: #ffc107;
+$danger: #dc3545;
+$light: #f8f8ff;
+$dark: #495158;
+$mysyscolor1: #188eee;
+$mysyscolor2: #3158cd;
+$gradient: linear-gradient(174deg, rgba(0,0,0,1) 0%, rgba(24,142,238,1) 0%, rgba(49,88,205,1) 100%);
+$gradient: linear-gradient(174deg, rgba(0,0,0,1) 0%, rgba(24,142,238,1) 0%, rgba(49,88,205,1) 100%);
+
+* {
+  margin: 0; padding: 0;
+  box-sizing: border-box;
+  // font-family: 'Kumbh Sans', sans-serif !important;
+  // font-family: 'Comfortaa', cursive !important;
+  // font-family: 'Open Sans', sans-serif;
+  // font-family: 'Comfortaa', cursive;
+  // font-family: 'Open Sans', sans-serif;
+  // font-family: 'Roboto Condensed', sans-serif;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+}
+img {
+  -webkit-user-drag: none;
+  -moz-user-modify: none;
+}
+.navbar {
+  z-index: 100 !important;
+}
+/* width */
+::-webkit-scrollbar {
+  width: .2rem;
+  height: .2rem;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: $light; 
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $mysyscolor1; 
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: $graydark; 
+}
+::placeholder {
+  color: rgb(213, 213, 213) !important;
+  font-size: 12px;
+}
+input[type=text], input[type=url], input[type=email], input[type=date], textarea {
+  outline: none !important;
+  border: none !important;
+  border-bottom: .2rem solid #eaeaea !important;
+  border-radius: 0rem !important;
+  box-shadow: none !important;
+  transition: .1s all linear;
+}
+select {
+  border-color: transparent !important;
+  box-shadow: none !important;
+  border-bottom: .2rem solid #eaeaea !important;
+}
+select::-ms-expand {
+  display: none !important;
+}
+input[type=text]:focus, input[type=url]:focus, input[type=email]:focus, input[type=date]:focus, textarea:focus, select:focus {
+  border: none !important;
+  border-bottom: .2rem solid $mysyscolor1 !important;
+}
+a.btn, .btn {
+  border-radius: .1rem !important;
+  transition: .3s all ease-in-out;
+  border: none !important;
+}
+button:hover, a.btn:hover {
+  background-color: $mysyscolor1 !important;
+  color: $light !important;
+}
+html {
+  scroll-behavior: smooth;
+  overflow-x: none !important;
+}
+
+body {
+  background-color: $light !important;
+  color: $graydark !important;
+}
+[class*=col-]{padding-right:0;padding-left:0}
+a { text-decoration: none !important; color: initial; }
+a:hover { color: $mysyscolor1 !important; }
+
+span { padding: .1rem; margin: .1rem; }
+.nav-item { transition: all .1s ease-in-out; }
+.nav-item:hover { box-shadow: 0px 3px 0px 0px $mysyscolor1; }
+.btn { margin: .5rem }
+
+// PERSONNALISER LE BORDER DES TABS
+.nav-tabs {
+  border-bottom: .1rem solid #cccccc !important;
+  margin-bottom: 0;
+  color: $dark;
+  overflow: scroll;
+  scroll-snap-type: mandatory;
+  scroll-snap-points-x: repeat(100vh);
+  scroll-snap-type: x mandatory;
+}
+// ACTIVE CLASSES POUR LES LIENS ET LES TABS
+.navbar-nav .nav-link {
+  padding: 1rem .5rem !important;
+}
+.navbar-nav .nav-link.active, .router-link-active {
+  box-shadow: 0px 2px 0px 0px $mysyscolor1;
+}
+.nav-tabs .nav-link.active {
+  box-shadow: 0px 3px 0px 0px $mysyscolor1;
+  background-color: $mysyscolor1;
+  color: $light;
+}
+.nav-tabs .nav-link.active:hover {
+  color: $light !important;
+}
+.nav-link { cursor: pointer; }
+.icon-btn {
+  display: flex; align-content: center; justify-content: center;
+  padding: .2em; margin: .3rem;
+  background-color: #ffffff90 !important; color: $mysyscolor1 !important;
+  border: .1rem solid $mysyscolor1 !important; outline: 0 !important;
+  border-radius: 5rem !important;
+  z-index: 5
+}
+.icon-btn:hover {
+  background-color: $mysyscolor1 !important;
+  border: .1rem solid $white !important; 
+}
+
+.main-title {
+  width: fit-content;
+  padding: .5rem .5rem 1rem 1rem !important;
+  margin: 1rem 0 !important;
+  font-weight: 700;
+  border-left: .7rem solid $mysyscolor1;
+  border-radius: .5rem 0 0 0;
+}
+.main-title .title {
+  display: block;
+  font-size: 42px;
+  padding: 0;
+  color: $dark;
+}
+
+
+.bg_gradient {
+  background: $gradient;
+  color: $white;
+}
+.bg_gradient_2 {
+  background: linear-gradient(180deg, rgba(255,113,113,1) 0%, rgba(255, 170, 113, 1) 100%) !important;
+  color: $white;
+}
+.bg_gradient_3 {
+  background-color: none;
+  color: $white;
+}
+.bg_mysys_color {
+  background-color: $mysyscolor2;
+  color: $white;
+}
+.transparent_to_bottom {
+  mask-origin: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+  color: $white;
+}
+.text__mysyscolor1 {
+  color: $mysyscolor1 !important;
+}
+
+.text_bold { font-weight: 700 !important; }
+.text_regular { font-weight: 500 !important; }
+.text_light { font-weight: 300 !important; }
+.font_sm { font-size: 12px; }
+.font_navbar { font-size: 14px; }
+
+
+.font-s1 { font-size: 8px !important; } .font-s2 { font-size: 10px !important; } .font-s3 { font-size: 12px !important; }
+.font-s4 { font-size: 13px !important; } .font-s5 { font-size: 14px !important; } .font-s6 { font-size: 15px !important; }
+.font-s7 { font-size: 16px !important; } .font-s8 { font-size: 18px !important; } .font-s9 { font-size: 20px !important; }
+.font-s10 { font-size: 22px !important; } .font-s11 { font-size: 26px !important; } .font-s12 { font-size: 32px !important; }
+
+.slick-dots {
+  bottom: 20px;
+  li button:before,
+  li.slick-active button:before {
+    color: transparent;
+    opacity: 1;
+  }
+  li button:before{
+    background-color: transparent;
+    border: 4px solid #fff;
+    border-radius: 50%;
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+
+  }
+  li.slick-active button:before {
+    background-color: #fff;
+  }
+}
+@media only screen and (min-width: 320px) and (max-width: 480px) {
+  .main-title {
+    border-left: .4rem solid $mysyscolor1;
+  }
+  .main-title .title {
+    font-size: 26px;
+  }  
+}
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+  .main-title {
+    border-left: .5rem solid $mysyscolor1;
+  }
+  .main-title .title {
+    font-size: 32px;
+  }  
+}
+@media only screen and (min-width: 769px) and (max-width: 992px) {
+  .main-title .title {
+    font-size: 36px;
+  }
+  
+}
+@media only screen and (min-width: 923px) and (max-width: 1024px) {
+  .main-title .title {
+    font-size: 42px;
+  }
+  
+}

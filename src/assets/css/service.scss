@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&Comfortaa:wght@300&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+$blue: #46b3e6;
+$lightblue: #dff6f0;
+$indigo: #6610f2;
+$purple: #6f42c1;
+$pink: #e83e8c;
+$red: #dc3545;
+$orange: #fd7e14;
+$yellow: #ffc107;
+$green: #28a745;
+$teal: #20c997;
+$cyan: #17a2b8;
+$white: #fff;
+$gray: #6c757d;
+$graydark: #495158;
+$primary: #007bff;
+$secondary: #6c757d;
+$success: #28a745;
+$info: #17a2b8;
+$warning: #ffc107;
+$danger: #dc3545;
+$light: #f8f8ff;
+$dark: #343a40;
+$mysyscolor1: #188eee;
+$mysyscolor2: #3158cd;
+$gradient: linear-gradient(174deg, rgba(0,0,0,1) 0%, rgba(24,142,238,1) 0%, rgba(49,88,205,1) 100%);
+$gradient: linear-gradient(174deg, rgba(0,0,0,1) 0%, rgba(24,142,238,1) 0%, rgba(49,88,205,1) 100%);
+
+
+.service {
+  display: flex !important;
+  flex-flow: row nowrap !important;
+  align-items: center !important;
+  background-color: $mysyscolor1;
+  color: $light;
+  height: 35rem;
+}
+.service-img {
+  position: relative;
+  height: 25rem;
+  object-fit: cover;
+  border-radius: .2rem;
+}
+
+
+@media only screen and (min-width: 320px) and (max-width: 480px) {
+  .s-card { flex: 1 0 100% !important; }
+  .service-img { display: none !important; }
+}
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+  .s-card { flex: 1 0 33.33% !important; }
+  .service-img { display: none !important; }
+}
+@media only screen and (min-width: 769px) and (max-width: 992px) {
+  .s-card { flex: 1 0 20% !important; }
+  .service-img { display: none !important; }
+}
+@media only screen and (min-width: 923px) and (max-width: 1024px) {
+  .s-card { flex: 1 0 25% !important; }
+}
