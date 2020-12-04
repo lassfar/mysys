@@ -1,8 +1,8 @@
 <template>
 <div>
-  <nav class="navbar navbar-expand-md navbar-dark bg-transparent text_light navforformation">
+  <nav class="navbar navbar-expand-md navbar-dark bg-primary text_light navforformation">
     <router-link class="navbar-brand" to="#">
-      <img class="navbar-brand ml-5" height="35" src="../../assets/img/logo_light.png" alt="mysys-logo">
+      <img class="navbar-brand ml-lg-5 ml-md-3 ml-2" height="35" src="../../assets/img/logo_light.png" alt="mysys-logo">
     </router-link>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>

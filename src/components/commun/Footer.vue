@@ -9,7 +9,7 @@ export default {
 </style>
 
 <template>
-<div>
+<div id="mysysFooter">
   <div class="footer container-fluid p-5">
     <div class="row align-items-baseline px-2 pl-lg-5">
       <div class="col-12">

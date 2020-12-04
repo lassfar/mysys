@@ -24,39 +24,38 @@ export default {
     Expertise,
     Mission,
     Client
-
+  },
+  created() {
   },
   mounted() {
-    this.ForceScrollToTop();
   },
-  // methods: {
-  //   ForceScrollToTop() {
-  //     document.getElementById('home').scrollIntoView();
-  //   },
-
-  // }
+  methods: {
+  } // mounted
 }
 </script>
 
 
 <template>
 <div id="home">
-<div class="j-bg-card1">
-  <NavBarForHome/>
-  <Inscription/>
-  <Jumbotron/></div>
-  <Domaine/>
-  <OurService/>
-  <div class="row my-lg-5 container-fluid">
-   <div class="col-12 col-lg-6">
-    <Expertise/>
-   </div>
-   <div class="col-12 col-lg-6">
-    <Mission/>
-   </div>
+  <div class="j-bg-card1">
+    <NavBarForHome/>
+    <Inscription/>
+    <Jumbotron/>
   </div>
-  <Partenaire/> 
-  <Chiffre/>
-  <Client/>
+  <Domaine/>
+  <OurService />
+  <div class="d-flex flex-wrap">
+    <div class="col-12 col-lg-6 col-xl-6">
+      <Expertise />
+    </div>
+    <div class="col-12 col-lg-6 col-xl-6">
+      <Mission />
+    </div>
+  </div>
+
+  <Partenaire />
+  <Chiffre />
+  <Client />
+  
 </div>
 </template>

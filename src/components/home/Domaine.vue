@@ -127,7 +127,7 @@ export default {
     <!-- else -->
     <ul v-else-if="domaines && !domaines.length && !loading" class="onglet w-100 nav nav-tabs align-items-center text-center" id="myTab" role="tablist">
       <li class="col-12 loading2">
-        <img src="../../assets/img/loading2.gif" class="loading-img">
+        <img src="../../assets/img/loading2.gif" class="loading_img">
       </li>
     </ul>
     <!-- else -->
@@ -139,9 +139,6 @@ export default {
     </ul>
     <!-- end-domaines -->
     
-    <!-- scroll-buttons -->
-    <!-- scroll-buttons -->
-
   
     <div v-if="domaines && domaines.length && loading" class="tab-content" id="myTabContent">
       <!-- theme -->
@@ -191,7 +188,7 @@ export default {
     <!-- tab-content -->
     <!-- LOADING .. -->
     <div v-else-if="domaines && !domaines.length && !loading" class="loading">
-      <img :src="require('../../assets/img/loading.gif')" class="loading-img" alt="loading pic">
+      <img :src="require('../../assets/img/loading.gif')" class="loading_img" alt="loading pic">
     </div>
     <!-- LOADING .. -->
     <!-- ERROR .. -->

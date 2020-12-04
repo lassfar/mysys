@@ -10,7 +10,7 @@
     </div>
     <div class="row">
      <div class="col-lg-6" id="pdr"> <div class="card p-lg-5 text-light pdr_it_bg  m-3 border-0 ">
-        <div class="card-body text_light">
+        <div class="card-body font-weight-light">
         <div class="card-title">
         <h1 class="text_bold">Placement des ressources</h1>  
         </div>
@@ -92,7 +92,7 @@
  <div class="row p-lg-5" id="erp">
    <h1 class="text_bold text-center pt-4 w-100">Conseil Intégration Des ERP et AMOA</h1>
    <div class="col-lg-6"> <div class="card p-lg-3 text-light  m-3 border-0" style="background-color:#a649a4;">
-    <div class="card-body text_light">
+    <div class="card-body font-weight-light">
      <div class="card-title">
      <h1 class="text_bold text-center">Odoo</h1> 
      </div>
@@ -187,7 +187,7 @@
     
 
      <div class="col-lg-6"> <div class="card p-lg-3 text-light m-3 border-0" style="background-color:#008bff;">
-     <div class="card-body text_light">
+     <div class="card-body font-weight-light">
      <div class="card-title">
      <h1 class="text_bold text-center">SAP</h1>  
      </div>

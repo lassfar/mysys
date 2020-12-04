@@ -21,7 +21,7 @@
      </div></div>
 
    <div class="col-lg-6"> <div class="card p-lg-5 text-light about-d-bg text_bold m-3 border-0 ">
-   <div class="card-body text_light">
+   <div class="card-body font-weight-light">
      <div class="card-title text_bold">
      <h1 class="text_bold" >Nos Themes De Formaton</h1> 
      </div>
@@ -42,7 +42,7 @@
 
    <div class="row ">
        <div class="col-lg-6"> <div class="card p-lg-5 text-light about-i-bg text_bold m-3 border-0 ">
-   <div class="card-body text_light">
+   <div class="card-body font-weight-light">
      <div class="card-title text_bold">
      <h1 class="text_bold">Intégrateurs d'ERP</h1> 
      </div>
@@ -78,7 +78,7 @@
         </div>
       </div></div>  
  <div class="col-lg-6"><div class="card text-light about-v-bg p-lg-5 text_bold m-3 border-0">
-        <div class="card-body text_light">
+        <div class="card-body font-weight-light">
           <div class="card-title text_bold">
           <h1 class="text_bold">Nos Valeurs</h1> 
           </div>

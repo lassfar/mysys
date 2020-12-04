@@ -13,54 +13,63 @@ export default {
 <template>
 <section id="chiffre">
   <div class="container-fluid py-5">
-    <div class="w-100 mt-4">
-      <h1 class="text-center text_bold">MySYS en Chiffres</h1>
+    <div class="main-title">
+      <span class="title">MySYS en Chiffres</span>
     </div>
 
-    <div class="row chiffres px-5">
-      <div class="col-lg-3 col-md-6 col-12">
-        <div class="d-flex flex-column chiffre">
-          <h1 class="display-3">
+    <div class="row">
+
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <div class="d-flex flex-column chiffre p-3">
+          <h2 class="font-lg-s12 font-md-s10 font-sm-s9">
             10 ans
-            <small class="text__mysyscolor1">+</small>
-          </h1>
-          <h3 class="py-3">
+            <small class="chiffre_plus text_mysyscolor1">
+              <i class="material-icons font-lg-s10">add</i>
+            </small>
+          </h2>
+          <h3 class="font-sm-s6 font-xs-s5">
             d'Expertise
           </h3>
         </div>
       </div>
 
-      <div class="col-lg-3 col-md-6 col-12">
-        <div class="d-flex flex-column chiffre">
-          <h1 class="display-3">
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <div class="d-flex flex-column chiffre p-3">
+          <h2 class="font-lg-s12 font-md-s10 font-sm-s9">
             30
-            <small class="text__mysyscolor1">+</small>
-          </h1>
-          <h3 class=" py-3">
+            <small class="chiffre_plus text_mysyscolor1">
+              <i class="material-icons font-lg-s10">add</i>
+            </small>
+          </h2>
+          <h3 class="font-sm-s6 font-xs-s5">
             Collaborateurs
           </h3>
         </div>
       </div>
       
-      <div class="col-lg-3 col-md-6 col-12">
-        <div class="d-flex flex-column chiffre">
-          <h1 class="display-3">
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <div class="d-flex flex-column chiffre p-3">
+          <h2 class="font-lg-s12 font-md-s10 font-sm-s9">
             50
-            <small class="text__mysyscolor1">+</small>
-          </h1>
-          <h3 class="py-3">
+            <small class="chiffre_plus text_mysyscolor1">
+              <i class="material-icons font-lg-s10">add</i>
+            </small>
+          </h2>
+          <h3 class="font-sm-s6 font-xs-s5">
             Missions par an
           </h3>
         </div>
       </div>
       
-      <div class="col-lg-3 col-md-6 col-12">
-        <div class="d-flex flex-column chiffre">
-          <h1 class="display-3">
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <div class="d-flex flex-column chiffre p-3">
+          <h2 class="font-lg-s12 font-md-s10 font-sm-s9">
             28
-            <small class="text__mysyscolor1">+</small>
-          </h1>
-          <h3 class="py-3">
+            <small class="chiffre_plus text_mysyscolor1">
+              <i class="material-icons font-lg-s10">add</i>
+            </small>
+          </h2>
+          <h3 class="font-sm-s6 font-xs-s5">
             Partenaires
           </h3>
         </div>

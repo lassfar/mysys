@@ -23,19 +23,20 @@ $dark: #343a40;
 $mysyscolor1: #188eee;
 $mysyscolor2: #3158cd;
 $gradient: linear-gradient(174deg, rgba(0,0,0,1) 0%, rgba(24,142,238,1) 0%, rgba(49,88,205,1) 100%);
-$gradient: linear-gradient(174deg, rgba(0,0,0,1) 0%, rgba(24,142,238,1) 0%, rgba(49,88,205,1) 100%);
 
 
 .chiffre {
-  display: flex; justify-content: flex-end;
-  align-items: center;
-}
-.chiffre > h1 {
-  padding-bottom: 1rem;
-  border-bottom: .3rem solid $mysyscolor1 !important;
-}
-.chiffres {
   display: flex;
   align-items: center;
-  height: 20rem;
+  transition: .5s all ease-in-out;
+  transform-origin: bottom right;
+}
+.chiffre:hover {
+  box-shadow: 0px 2px 0px 0px $light; 
+  transform: translateY(-5px);
+}
+.chiffre > h2 {
+  padding-bottom: 1rem;
+  border-bottom: .3rem solid $mysyscolor1;
+  letter-spacing: -2px !important;
 }

@@ -175,7 +175,7 @@ export default {
     <!-- else -->
     <ul v-else class="onglet w-100 nav nav-tabs align-items-center text-center" id="myTab" role="tablist">
       <li class="col-12 loading2">
-        <img src="../../../assets/img/loading2.gif" class="loading-img" alt="loading pic">
+        <img src="../../../assets/img/loading2.gif" class="loading_img" alt="loading pic">
       </li>
     </ul>
     <!-- end-themes -->
@@ -245,7 +245,7 @@ export default {
     </div>
     <!-- LOADING .. -->
     <div v-else class="loading">
-      <img src="../../../assets/img/loading.gif" class="loading-img">
+      <img src="../../../assets/img/loading.gif" class="loading_img">
     </div>
     <!-- LOADING .. -->
 

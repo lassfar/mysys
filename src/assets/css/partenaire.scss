@@ -43,10 +43,11 @@ $gradient: linear-gradient(174deg, rgba(0,0,0,1) 0%, rgba(24,142,238,1) 0%, rgba
   justify-content: center !important;
 }
 .p-card-img {
-  padding: .5rem;
+  padding: 1rem;
   max-width: 100%;
   min-height: 5rem;
-  max-height: 5rem;
+  max-height: 6rem;
+  align-self: center; 
   object-fit: cover;
   // filter: grayscale(100%);
 }
