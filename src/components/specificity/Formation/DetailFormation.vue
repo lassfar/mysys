@@ -97,20 +97,22 @@ export default {
       let detailFormationHeight = document.getElementById('detailFormation').offsetHeight;
       let FooterHeight = document.getElementById('mysysFooter').offsetHeight;
 
-      let verticalHeight = window.scrollY;
-      if (screen.width > 1024) {
-        if (verticalHeight > 300) {
+      let verticalPos = window.scrollY; // récupérer la position de scroll en px
+      let divHeight = detailFormationHeight - FooterHeight; // récupérer la taille vertical de 'div'
+      console.log('vert pos : ' + verticalPos + ' div height : ' + divHeight);
+      if (screen.width > 1024) { // fixer 'card' avec les grandes écrans
+        if (verticalPos > 200) {
           card.style.position = "fixed";
           card.style.top = 0;
-        } else {
+          card.style.display = "block";
+        } else { // laisser 'card' avec sa position d'origine 
           card.style.position = "absolute";
+          card.style.display = "block";
         }
-        // alert("wind Y == " + window.scrollY + " div height : " + detailFormationHeight);
-        let divHeight = verticalHeight - FooterHeight;
-        if (divHeight > detailFormationHeight) {
-          card.style.position = "absolute";
+        if (verticalPos > divHeight) {
+          card.style.display =  "none";
         }
-      } else {
+      } else { // laisser 'card' relative avec le jumbotron (position d'origine relative)
         card.style.position = "relative";
       } // screen width
     },
@@ -184,7 +186,7 @@ export default {
 
         <!-- col -->
         <div class="col-lg-4 col-md-5 col-12 ml-auto">
-          <div class="d-card" id="formationCard" v-if="formation && formation.length && isLoaded">
+          <div class="d-card" id="formationCard" v-if="formation && isLoaded">
             <div class="d-card-header">
               <img class="d-card-img" :src="formation.url_img" alt="formation__img">
             </div>
@@ -199,7 +201,7 @@ export default {
                 <i class="fa fa-arrow-down mr-1"></i>
                 <small>
                   {{ formation.prix && formation.prix_off ? 
-                    (((formation.prix_off - formation.prix) / formation.prix) * 100).toFixed(0) + "% de réduction" : "--" }}
+                    (((formation.prix * 100) / formation.prix_off)).toFixed(0) + "% de réduction" : "--" }}
                 </small>
               </span>
               <!-- <div class="d-flex"> -->
@@ -279,7 +281,7 @@ export default {
     <div class="row">
       <div class="col-lg-7 col-md-8 col-12 p-5 rounded-right bg_light_2" style="white-space: pre-wrap;" id="objectif">
         <!-- objectif convertis -->
-        <div v-if="!formation && !formation.length && !isLoaded" class="loading_sm">
+        <div v-if="!formation && !isLoaded" class="loading_sm">
           <img class="loading_img" :src="require('../../../assets/img/loading-circle.gif')" alt="loading ui">
         </div>
       </div>
@@ -294,7 +296,7 @@ export default {
       <div class="col-lg-7 col-md-8 col-12 mb-5 pr-3" style="white-space: pre-wrap;" id="programme">
         <!-- programme convertis -->
         
-        <div v-if="!formation && !formation.length && !isLoaded" class="loading_sm">
+        <div v-if="!formation && !isLoaded" class="loading_sm">
           <img class="loading_img" :src="require('../../../assets/img/loading-circle.gif')" alt="loading ui">
         </div>
         
