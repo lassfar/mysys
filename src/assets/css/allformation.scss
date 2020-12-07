@@ -36,7 +36,7 @@ $gradient: linear-gradient(174deg, rgba(0,0,0,1) 0%, rgba(24,142,238,1) 0%, rgba
 .t-card {
   display: flex; position: relative;
   flex-flow: row wrap; flex: 1 0 20%; max-width: 40rem; //limiter le width
-  padding: .5rem; margin: .5rem;
+  margin: .5rem;
   min-height: 20rem; max-height: 25rem; min-width: 10rem;
   transition: all .5s ease-in-out;
   cursor: pointer;

@@ -8,6 +8,8 @@ export default {
   data() {
     return {
       isLoaded: false,
+      isProgramLoaded: false,
+      isObjectifLoaded: false,
       form_param: undefined,
       formation: {},
       formationbycat: {},
@@ -21,14 +23,14 @@ export default {
         type: "",
       },
       dataTransform : [
-        {symbol: '##', tag: 'strong', classes: 'text_mysyscolor1 font-s8 subtitle text-capitalize my-5', addition: ''}, // section title
-        {symbol: '&&', tag: 'strong', classes: 'text_mysyscolor1 font-s6 mb-3', addition: '• '}, // subtitle bold
+        {symbol: '##', tag: 'h3', classes: 'subtitle font-lg-s7 font-md-s7 font-s5 text-capitalize mt-4', addition: ''}, // section title
+        {symbol: '&&', tag: 'h4', classes: 'text_mysyscolor1 font-lg-s6 font-md-s6 font-s5 mt-4 mb-2', addition: '⬢ '}, // subtitle bold
         {symbol: '@@', tag: 'ul', classes: 'd-flex flex-row flex-wrap list-unstyled font-weight-bold', addition: ''}, // ul list container
-        {symbol: '__', tag: 'li', classes: 'font-weight-light pl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12', addition: '<strong>+ </strong>'}, // li list element
-        {symbol: '==', tag: 'li', classes: 'font-weight-light pl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12', addition: '<strong class="text_mysyscolor1">✔ </strong>'},
+        {symbol: '__', tag: 'li', classes: 'font-weight-light pl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12', addition: '<strong>• </strong>'}, // li list element
+        {symbol: '==', tag: 'li', classes: 'font-weight-light pl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mt-2', addition: '<strong class="text_mysyscolor1">✔ </strong>'},
         {symbol: '**', tag: 'strong', classes: '', addition: ''}, // text bold
-        {symbol: '//', tag: 'em', classes: 'font-s5', addition: ''}, // italic
-        {symbol: '~~', tag: 'u', classes: '', addition: ''}, // underline
+        {symbol: '//', tag: 'p', classes: 'font-italic', addition: ''}, // italic
+        {symbol: '~~', tag: 'u', classes: 'text-underline', addition: ''}, // underline
         {symbol: '||', tag: 'mark', classes: 'bg_gradient', addition: ''},
         {symbol: '""', tag: 'q', classes: '', addition: ''},
       ]
@@ -52,11 +54,13 @@ export default {
           // récupérer les formations similaires
           this.GetFormationByCat(this.formation.category)
         });
+      this.isLoaded = true;
 
       // TRANSFORMER LES PARAGRAPH EN HTML
       this.ConvertDataTextInView(this.programme, this.formation.programme, 'programme');
+      this.isProgramLoaded = true;
       this.ConvertDataTextInView(this.objectif, this.formation.objectif, 'objectif');
-      this.isLoaded = true;
+      this.isObjectifLoaded = true;
     },
     GetFormationByCat(cat){
       this.axios.get(`/api/mysys/formationsbycat/${cat}`).then(response => this.formationbycat = response.data);
@@ -94,13 +98,15 @@ export default {
     // UI METHODES
     DisplayCardOnScroll() {
       let card = document.getElementById('formationCard');
+      let formaBanner = document.getElementById('formaBanner');
       let detailFormationHeight = document.getElementById('detailFormation').offsetHeight;
       let FooterHeight = document.getElementById('mysysFooter').offsetHeight;
 
       let verticalPos = window.scrollY; // récupérer la position de scroll en px
       let divHeight = detailFormationHeight - FooterHeight; // récupérer la taille vertical de 'div'
       console.log('vert pos : ' + verticalPos + ' div height : ' + divHeight);
-      if (screen.width > 1024) { // fixer 'card' avec les grandes écrans
+      if (screen.width >= 1024) { // fixer 'card' avec les grandes écrans
+        formaBanner.style.opacity = "none";
         if (verticalPos > 200) {
           card.style.position = "fixed";
           card.style.top = 0;
@@ -112,8 +118,20 @@ export default {
         if (verticalPos > divHeight) {
           card.style.display =  "none";
         }
-      } else { // laisser 'card' relative avec le jumbotron (position d'origine relative)
+      } else if (screen.width < 1024) { // laisser 'card' relative avec le jumbotron (position d'origine relative)
         card.style.position = "relative";
+        // banner formation
+      console.log('vert pos : ' + verticalPos + ' div height : ' + divHeight);
+        if (verticalPos > 700) {
+          formaBanner.style.position = "fixed";
+          formaBanner.style.bottom = 0;
+          formaBanner.style.display = "block";
+        } else { // laisser 'formaBanner' avec sa position d'origine 
+          formaBanner.style.position = "relative";
+        }
+        if (verticalPos > divHeight) {
+          formaBanner.style.backgroundColor =  "#0f4822";
+        }
       } // screen width
     },
 
@@ -133,9 +151,9 @@ export default {
   <div class="container-fluid m-0 p-0">
     <div class="formation-section bg-dark">
 
-      <div class="row" style="padding-top:40px !important;">
+      <div class="row pt-4">
 
-        <div class="col-lg-8 col-md-7 col-12 w-100 pr-lg-5 pr-md-5 pr-0 py-5">
+        <div class="col-xl-8 col-lg-8 col-md-7 col-12 w-100 pr-lg-5 pr-md-5 pr-0 py-5">
           <span :class="formation.certif ? 'badge badge-success my-3' : ''">
             {{ formation.certif ? "• Certificat disponible" : "" }}
           </span>
@@ -185,7 +203,7 @@ export default {
         <!-- </div> -->
 
         <!-- col -->
-        <div class="col-lg-4 col-md-5 col-12 ml-auto">
+        <div class="col-xl-4 col-lg-4 col-md-5 col-12 ml-auto">
           <div class="d-card" id="formationCard" v-if="formation && isLoaded">
             <div class="d-card-header">
               <img class="d-card-img" :src="formation.url_img" alt="formation__img">
@@ -234,9 +252,9 @@ export default {
                   </small>
                 </span>
 
-                <h6 class="text_bold mt-4">Formations Similaires :</h6>
 
-                <div class="d-flex flex-wrap">
+                <div class="d-flex flex-wrap d-xl-block d-lg-block d-sm-none">
+                  <h6 class="text_bold mt-4">Formations Similaires :</h6>
                   <div class="col-12 text-light rounded m-1" 
                     v-bind:style="{background: 'linear-gradient(180deg, rgba(1,1,1,.3) 0%, rgba(1,1,1,.2) 100%),' + 'url(' + forbycat.url_img + '), no-repeat', backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}"
                     v-for="forbycat in formationbycat" :key="forbycat.id">
@@ -276,12 +294,12 @@ export default {
   <!-- container-fluid -->
   <div class="container-fluid py-5">
     <div class="main-title">
-      <span class="title font-s10">Ce que vous allez apprendre</span>
+      <span class="title font-lg-s8 font-md-s8 font-s6">Ce que vous allez apprendre</span>
     </div>
     <div class="row">
-      <div class="col-lg-7 col-md-8 col-12 p-5 rounded-right bg_light_2" style="white-space: pre-wrap;" id="objectif">
+      <div id="objectif" class="col-xl-7 col-lg-7 col-md-12 col-12 rounded-right bg_light_2 p-xl-5 p-md-5 p-sm-4 p-4" style="white-space: pre-wrap;">
         <!-- objectif convertis -->
-        <div v-if="!formation && !isLoaded" class="loading_sm">
+        <div v-if="(!formation || formation) && !isObjectifLoaded" class="loading_sm">
           <img class="loading_img" :src="require('../../../assets/img/loading-circle.gif')" alt="loading ui">
         </div>
       </div>
@@ -289,14 +307,14 @@ export default {
     </div>
   
     <div class="main-title">
-      <span class="title font-s10">Programme</span>
+      <span class="title font-lg-s8 font-md-s8 font-s6">Programme</span>
     </div>
 
-    <div class="row pl-5">
-      <div class="col-lg-7 col-md-8 col-12 mb-5 pr-3" style="white-space: pre-wrap;" id="programme">
+    <div class="row px-xl-5 px-md-5 px-sm-4 px-4">
+      <div class="col-xl-7 col-lg-7 col-md-12 col-12 mb-5 pr-3" id="programme">
         <!-- programme convertis -->
         
-        <div v-if="!formation && !isLoaded" class="loading_sm">
+        <div v-if="(!formation || formation) && !isProgramLoaded" class="loading_sm">
           <img class="loading_img" :src="require('../../../assets/img/loading-circle.gif')" alt="loading ui">
         </div>
         
@@ -304,6 +322,23 @@ export default {
     </div>
   </div>
   <!-- end-container-fluid -->
+  
+  <div id="formaBanner" class="w-100 d-flex flex-nowrap justify-content-between align-items-center bg-dark text-light px-lg-4 px-4">
+
+    <div class="d-flex align-items-center">
+      <span class="font-lg-s6 font-md-s6 font-s4 mr-lg-5 mr-2">
+        {{ formation.name ? formation.name : "--" }}
+      </span>
+    </div>
+
+    <div class="d-flex align-items-center">
+      <span class="font-lg-s6 font-md-s6 font-s4 mx-2 prix">
+        {{ formation.prix ? Math.floor(formation.prix).toFixed(2) + " MAD" : "Contactez-nous" }}
+      </span>
+      <button class="btn btn-primary">S'inscrire</button>
+    </div>
+
+  </div>
 
    <div class="modal fade" id="inscriptionModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -366,12 +401,12 @@ export default {
           </div>
           <!-- container-fluid -->
           
-          <div class="modal-footer ">
+          <div class="modal-footer">
             <button type="button" class="btn btn-light" data-dismiss="modal">Fermer</button>
             <button type="button" class="btn text-light border-0" style="background-color:#188eee;">S'inscrire</button>
           </div>
 
-      </div>
+        </div>
 
         
       </div>
