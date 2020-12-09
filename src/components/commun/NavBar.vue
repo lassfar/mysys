@@ -1,9 +1,9 @@
 <template>
 <div>
   <!-- <img class="navbar-brand" height="60" src="../../assets/img/mysys-logo.png" alt="mysys-logo"> -->
-  <nav class="navbar navbar-expand-md navbar-light bg-transparent text_light p-3">
+  <nav class="navbar navbar-expand-md navbar-light bg-transparent border-0 text_light p-3">
     <a class="navbar-brand" href="/home">
-      <img class="navbar-brand ml-5" height="35" src="../../assets/img/logo_black.png" alt="mysys-logo">
+      <img class="navbar-brand" height="35" src="../../assets/img/logo_black.png" alt="mysys-logo">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>

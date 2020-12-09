@@ -26,6 +26,7 @@ export default {
     Client
   },
   created() {
+    document.title = "MySYS • Une plateforme des formations certifiantes";
   },
   mounted() {
   },

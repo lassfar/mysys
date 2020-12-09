@@ -1,3 +1,12 @@
+<script>
+export default {
+  created() {
+    window.scrollTo(0, 0);
+    document.title = "MySYS • A Propos";
+  }
+}
+</script>
+
 <style lang="scss">
   @import '../../assets/css/about.scss';
 </style>

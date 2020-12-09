@@ -1,9 +1,13 @@
 <script>
+import Contactez from '../../commun/Contactez.vue';
 import NavBarForDFormation from '../../commun/NavBarForDFormation.vue';
+import FormationSimilaire from './FormationSimilaire.vue';
 export default {
   name: 'DetailFormation',
   components: {
-    NavBarForDFormation
+    NavBarForDFormation,
+    Contactez,
+    FormationSimilaire
   },
   data() {
     return {
@@ -12,7 +16,7 @@ export default {
       isObjectifLoaded: false,
       form_param: undefined,
       formation: {},
-      formationbycat: {},
+      formations_by_cat: {},
       programme: null, prerequis: null, objectif: null,
       data_insc:{
         nom: "",
@@ -37,24 +41,31 @@ export default {
     }
   },
   created() {
+    window.scrollTo(0, 0);
+    document.title = "Formation en --";
     window.addEventListener('scroll', this.DisplayCardOnScroll);
     // récupérer les formations
     this.form_param = Math.floor(this.$route.params.form_param);
-    this.FetchAPI(`/api/mysys/formations/${this.form_param}`);
+    this.FetchAPI(`/api/mysys/formations/${this.form_param}`, `/api/mysys/formationsbycat/`);
   },
   watch: {
     // appeler la méthode si les paramètres changent
     '$route': 'FetchAPI'
   },
   methods: {
-    async FetchAPI(url) {
-      await this.axios.get(url)
+    async FetchAPI(forma_url, theme_url) {
+      await this.axios.get(forma_url)
         .then(res => this.formation = res.data)
         .then(() => {
           // récupérer les formations similaires
-          this.GetFormationByCat(this.formation.category)
+          // this.Getformations_by_cat(this.formation.category)
+          this.axios.get(`${theme_url}${this.formation.mysystheme_id}`)
+            .then((res) => {
+              this.formations_by_cat = res.data.slice(0, 4)
+            })
         });
       this.isLoaded = true;
+      document.title = `${this.formation.name} • ${(this.formation.description).substring(0, 50)}..`;
 
       // TRANSFORMER LES PARAGRAPH EN HTML
       this.ConvertDataTextInView(this.programme, this.formation.programme, 'programme');
@@ -62,9 +73,11 @@ export default {
       this.ConvertDataTextInView(this.objectif, this.formation.objectif, 'objectif');
       this.isObjectifLoaded = true;
     },
-    GetFormationByCat(cat){
-      this.axios.get(`/api/mysys/formationsbycat/${cat}`).then(response => this.formationbycat = response.data);
-    },
+    // async Getformations_by_cat(cat){
+    //   console.log("cat : ", cat);
+    //   await this.axios.get(`/api/mysys/formationsbycat/${cat}`)
+    //     .then(response => this.formations_by_cat = response.data);
+    // },
 
     // **** TRANSFORM CONTENT ****
     TransformContent(textToTransform, symbol, tag, classes, addition) {
@@ -81,7 +94,7 @@ export default {
       let newDom = document.createElement('article');
       newDom.innerHTML = textToConvert;
       domGoal.append(newDom);
-      console.log(domGoal.textContent);
+      // console.log(domGoal.textContent);
     },
     ConvertDataTextInView(myText, originText, domId) {
       // converter le programme de formation au HTML
@@ -90,24 +103,30 @@ export default {
         let converted = this.TransformContent(myText, trans.symbol, trans.tag, trans.classes, trans.addition);
         myText = converted;
       });
-      console.log("myText : ", myText);
+      // console.log("myText : ", myText);
       this.ConvertStringToHtml(myText, domId);
     },
     // **** END TRANSFORM CONTENT ****
-
+    ScrollUserTo(elemId) {
+      document.getElementById(elemId).scrollIntoView();
+    },
     // UI METHODES
     DisplayCardOnScroll() {
       let card = document.getElementById('formationCard');
+      // let formaJumboHeight = document.getElementById('formaSection').offsetHeight;
+      let formaSimHeight = document.getElementById('formationSimilaire').offsetHeight;
       let formaBanner = document.getElementById('formaBanner');
-      let detailFormationHeight = document.getElementById('detailFormation').offsetHeight;
+      let contactezHeight = document.getElementById('contactez').offsetHeight;
+      let detailFormaHeight = document.getElementById('detailFormation').offsetHeight;
       let FooterHeight = document.getElementById('mysysFooter').offsetHeight;
 
       let verticalPos = window.scrollY; // récupérer la position de scroll en px
-      let divHeight = detailFormationHeight - FooterHeight; // récupérer la taille vertical de 'div'
-      console.log('vert pos : ' + verticalPos + ' div height : ' + divHeight);
+      let divHeight = detailFormaHeight - formaSimHeight - contactezHeight - FooterHeight; // récupérer la taille vertical de 'div'
+      // console.log('vert pos : ' + verticalPos + ' div height : ' + divHeight);
+
       if (screen.width >= 1024) { // fixer 'card' avec les grandes écrans
-        formaBanner.style.opacity = "none";
-        if (verticalPos > 200) {
+        formaBanner.setAttribute('style', 'display: none !important');
+        if (verticalPos > 100 && verticalPos < divHeight) {
           card.style.position = "fixed";
           card.style.top = 0;
           card.style.display = "block";
@@ -116,21 +135,22 @@ export default {
           card.style.display = "block";
         }
         if (verticalPos > divHeight) {
-          card.style.display =  "none";
+          card.style.display = "none";
+          // card.style.bottom = 0;
         }
       } else if (screen.width < 1024) { // laisser 'card' relative avec le jumbotron (position d'origine relative)
         card.style.position = "relative";
         // banner formation
-      console.log('vert pos : ' + verticalPos + ' div height : ' + divHeight);
-        if (verticalPos > 700) {
+        if (verticalPos > 700 && verticalPos < divHeight) {
+          formaBanner.style.display = "block";
           formaBanner.style.position = "fixed";
           formaBanner.style.bottom = 0;
-          formaBanner.style.display = "block";
         } else { // laisser 'formaBanner' avec sa position d'origine 
+          formaBanner.style.display = "block";
           formaBanner.style.position = "relative";
         }
         if (verticalPos > divHeight) {
-          formaBanner.style.backgroundColor =  "#0f4822";
+          formaBanner.style.display =  "none";
         }
       } // screen width
     },
@@ -149,7 +169,7 @@ export default {
 <div id="detailFormation">
   <NavBarForDFormation/>
   <div class="container-fluid m-0 p-0">
-    <div class="formation-section bg-dark">
+    <section class="formation-section bg_dark" id="formaSection">
 
       <div class="row pt-4">
 
@@ -194,7 +214,7 @@ export default {
           <span class="badge badge-primary mt-3">+ 52 participants inscrits</span>
           <div class="w-100 mt-2">
             <button class="btn btn-light font_sm btn-sm ml-0"  data-target="#inscriptionModal44" data-toggle="modal">Partager <i class="fa fa-share"></i></button>
-            <a href="#programme" class="btn btn-light font_sm btn-sm ml-0">Voir le programme</a>
+            <button v-on:click="ScrollUserTo('programme')" class="btn btn-light font_sm btn-sm ml-0">Voir le programme</button>
           </div>
         </div>
 
@@ -223,8 +243,8 @@ export default {
                 </small>
               </span>
               <!-- <div class="d-flex"> -->
-                <button class="btn btn-primary btn-block btn-lg mx-1" data-target="#inscriptionModal2" data-toggle="modal">S'inscrire</button>
-                <router-link to="/contact" class="btn btn-outline-secondary btn-block btn-lg mx-1">Contacter</router-link>
+                <button class="btn btn-primary btn-block btn-lg mx-0" data-target="#inscriptionModal2" data-toggle="modal">S'inscrire</button>
+                <router-link to="/contact" class="btn btn-outline-secondary btn-block btn-lg mx-0">Contacter</router-link>
               <!-- </div> -->
 
               <div class="w-100 my-3">
@@ -253,11 +273,11 @@ export default {
                 </span>
 
 
-                <div class="d-flex flex-wrap d-xl-block d-lg-block d-sm-none">
+                <!-- <div class="d-flex flex-wrap d-xl-block d-lg-block d-sm-none">
                   <h6 class="text_bold mt-4">Formations Similaires :</h6>
                   <div class="col-12 text-light rounded m-1" 
                     v-bind:style="{background: 'linear-gradient(180deg, rgba(1,1,1,.3) 0%, rgba(1,1,1,.2) 100%),' + 'url(' + forbycat.url_img + '), no-repeat', backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}"
-                    v-for="forbycat in formationbycat" :key="forbycat.id">
+                    v-for="forbycat in formations_by_cat" :key="forbycat.id">
                     <div class="text-center p-2">
                       <router-link :to="{name: 'detailformation', params: { form_param: forbycat.id } }">
                         <h6 class="text_bold text-light mb-0"> {{forbycat.name}}</h6>
@@ -266,7 +286,7 @@ export default {
                     </div>
                     
                   </div>
-                </div>
+                </div> -->
       
               </div>
             </div>
@@ -284,7 +304,7 @@ export default {
       </div>
       <!-- end-row -->
       
-    </div>
+    </section>
     <!-- end-formation-section -->
 
   </div>
@@ -292,14 +312,14 @@ export default {
 
 
   <!-- container-fluid -->
-  <div class="container-fluid py-5">
+  <div class="container-fluid py-4">
     <div class="main-title">
       <span class="title font-lg-s8 font-md-s8 font-s6">Ce que vous allez apprendre</span>
     </div>
     <div class="row">
-      <div id="objectif" class="col-xl-7 col-lg-7 col-md-12 col-12 rounded-right bg_light_2 p-xl-5 p-md-5 p-sm-4 p-4" style="white-space: pre-wrap;">
+      <div id="objectif" class="col-xl-7 col-lg-7 col-md-12 col-12 rounded-right bg_light_2 p-4">
         <!-- objectif convertis -->
-        <div v-if="(!formation || formation) && !isObjectifLoaded" class="loading_sm">
+        <div v-if="!isObjectifLoaded" class="loading loading_sm">
           <img class="loading_img" :src="require('../../../assets/img/loading-circle.gif')" alt="loading ui">
         </div>
       </div>
@@ -314,7 +334,7 @@ export default {
       <div class="col-xl-7 col-lg-7 col-md-12 col-12 mb-5 pr-3" id="programme">
         <!-- programme convertis -->
         
-        <div v-if="(!formation || formation) && !isProgramLoaded" class="loading_sm">
+        <div v-if="!isProgramLoaded" class="loading_sm">
           <img class="loading_img" :src="require('../../../assets/img/loading-circle.gif')" alt="loading ui">
         </div>
         
@@ -323,7 +343,7 @@ export default {
   </div>
   <!-- end-container-fluid -->
   
-  <div id="formaBanner" class="w-100 d-flex flex-nowrap justify-content-between align-items-center bg-dark text-light px-lg-4 px-4">
+  <div id="formaBanner" class="w-100 d-flex flex-nowrap justify-content-between align-items-center bg_dark px-lg-4 px-2">
 
     <div class="d-flex align-items-center">
       <span class="font-lg-s6 font-md-s6 font-s4 mr-lg-5 mr-2">
@@ -333,12 +353,21 @@ export default {
 
     <div class="d-flex align-items-center">
       <span class="font-lg-s6 font-md-s6 font-s4 mx-2 prix">
-        {{ formation.prix ? Math.floor(formation.prix).toFixed(2) + " MAD" : "Contactez-nous" }}
+        {{ formation.prix ? Math.floor(formation.prix).toFixed(0) + " MAD" : "Contactez-nous" }}
       </span>
-      <button class="btn btn-primary">S'inscrire</button>
+      <button class="btn btn-primary" data-target="#inscriptionModal2" data-toggle="modal">S'inscrire</button>
+      <button class="btn btn-secondary d-sm-inline-block d-none">Contactez</button>
     </div>
 
   </div>
+  
+  <formation-similaire 
+    :form_param="form_param"
+    :category="formations_by_cat.category"
+    :formations="formations_by_cat">
+  </formation-similaire>
+
+  <contactez></contactez>
 
    <div class="modal fade" id="inscriptionModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -403,16 +432,19 @@ export default {
           
           <div class="modal-footer">
             <button type="button" class="btn btn-light" data-dismiss="modal">Fermer</button>
-            <button type="button" class="btn text-light border-0" style="background-color:#188eee;">S'inscrire</button>
+            <button type="button" class="btn btn-primary text-light border-0">S'inscrire</button>
           </div>
 
         </div>
+        <!-- end-modal-body -->
 
         
       </div>
     </div>
   </div>
 
+
+  <!-- MODALS -->
   <div class="modal fade bd-example-modal-lg" id="inscriptionModal44" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
      <div class="modal-content">
@@ -452,6 +484,7 @@ export default {
               style="background-color:#0270ad;"
               network="linkedin"
               url="google.com"
+              :title="formation.name"
               >
               <i class="fa fa-linkedin"></i> en LinkedIn
             </ShareNetwork>
@@ -484,7 +517,7 @@ export default {
    </div>
   </div>
  </div>
- <!-- end-modal -->
+ <!-- END-MODALS -->
 
 </div>
 </template>

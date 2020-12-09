@@ -1,5 +1,4 @@
 <script>
-
 export default {
   name: 'Domaine',
   data () {
@@ -80,7 +79,7 @@ export default {
     },
     
 
-  }, // METHODS
+  } // METHODS
 }
 </script>
 
@@ -150,14 +149,13 @@ export default {
           <div class="m-cards" id="mCards">
 
             <!-- card -->
-            <div :key="themeIndex" v-for="(theme, themeIndex) in themes_domaine.slice(begin, end)" class="m-card">
+            <div class="m-card" :key="themeIndex" v-for="(theme, themeIndex) in themes_domaine.slice(begin, end)">
               <div class="m-card-header">
                 <img class="m-card-img" v-bind:src="theme.url_img" :alt="`theme ${themeIndex}`">
                 <h2 class="m-card-title">{{theme.name}}</h2>
               </div>
               <div class="m-card-content">
-               <router-link :to="{ name: 'allformation', params: {theme_param: theme.id, domaine_param: currentDomaineId} }">
-                <h2 class="text-light">{{theme.name}}</h2></router-link>
+                <h2 class="font-lg-8 font-md-s6 font-sm-4 font-s6 text_bold">{{theme.name}}</h2>
                 <p class="m-card-desc text-light ">
                   {{theme.desc ? theme.desc.substring(0, 200) + ".." : "--"}}
                 </p>
@@ -207,4 +205,3 @@ export default {
   
 </div>
 </template>
-

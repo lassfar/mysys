@@ -7,9 +7,9 @@ export default {
     Footer
   },
   mounted() {
-    window.addEventListener('scroll', this.DisplayBackTopOnScroll);
   },
   created() {
+    window.addEventListener('scroll', this.DisplayBackTopOnScroll);
     this.ScrollToTop();
   },
   methods: {

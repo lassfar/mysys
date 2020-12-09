@@ -10,7 +10,7 @@ export default {
 
 <template>
 <div id="mysysFooter">
-  <div class="footer container-fluid p-xl-5 p-lg-5 p-4">
+  <div class="footer container-fluid p-5">
     <div class="row align-items-baseline px-2 pl-lg-5">
       <div class="col-12">
       <div class="row p-4">
@@ -34,7 +34,7 @@ export default {
   
       </div>
     
-      <div class="col-lg-3 col-md-6 col-12 ">
+      <div class="col-lg-3 col-md-6 col-12 mt-4">
         <h6 class="footer-title">CONTACT</h6>
         <span class="footer-item d-flex align-items-center ">
           <i class="material-icons ronded-1">location_on</i>
@@ -50,7 +50,7 @@ export default {
         </span>
       </div>
 
-      <div class="col-lg-2 col-md-6 col-12 ">
+      <div class="col-lg-2 col-md-6 col-12 mt-4">
         <h6 class="footer-title">LIENS UTILES</h6>
         <span class="footer-item d-flex align-items-center">
           <i class="material-icons ronded-1">navigate_next</i>
@@ -78,7 +78,7 @@ export default {
         </span>
       </div>
 
-       <div class="col-lg-3 col-md-6 col-12 ">
+       <div class="col-lg-3 col-md-6 col-12 mt-4">
         <h6 class="footer-title">ACCÈS RAPIDE</h6>
         <span class="footer-item d-flex align-items-center">
           <i class="material-icons ">navigate_next</i>
@@ -106,7 +106,7 @@ export default {
         </span>
       </div>
   
-      <div class="col-lg-4 col-md-6 col-12 ">
+      <div class="col-lg-4 col-md-6 col-12 mt-4">
         <form action="">
           <p class="footer-title">S'ABONNER À NOTRE NEWSLETTER</p>
           <span class="footer-item d-flex align-items-center">

@@ -1,10 +1,14 @@
 <script>
 import NavBar from '../../commun/NavBar.vue';
+import FormationCard from '../../ui/FormationCard.vue';
+import Contactez from '../../commun/Contactez.vue';
 
 export default {
   name: 'AllFormation',
   components: {
-    NavBar
+    NavBar, 
+    FormationCard,
+    Contactez
   },
   data () {
     return {
@@ -24,6 +28,8 @@ export default {
     }
   },
   created() {
+    window.scrollTo(0, 0);
+    document.title = "MySYS • Formations";
     this.domaine_param = this.$route.params.domaine_param ? this.$route.params.domaine_param : undefined;
     this.theme_param = this.$route.params.theme_param ? Math.floor(this.$route.params.theme_param) : undefined;
     this.FetchAPI('/api/mysys/domaines', '/api/mysys/themes', '/api/mysys/formations');
@@ -65,15 +71,19 @@ export default {
       console.log("child by parent domaine theme id params : ", domaineId + " " + themeId);
       this.themes_by_domaine = this.themes.filter((theme) => {
         return (
+          // récup. formations à partir theme.id url
           (domaineId && theme.mysysdomain_id === domaineId) || 
-          (theme.mysysdomain_id === (this.currentDomaine[0] ? this.currentDomaine[0].id : this.currentDomaine.id))
+          // sinon récupérer le premier 'domaine' avec ses 'thèmes'
+          (theme.mysysdomain_id === ((this.currentDomaine[0] && this.currentDomaine[0].id) || this.currentDomaine.id))
         ) 
       });
       // get formations by theme
       this.formations_by_theme = this.formations.filter((formation) => {
         return (
+          // récup. formations à partir theme.id url
           (themeId && formation.mysystheme_id === themeId) || 
-          (formation.mysystheme_id === (this.currentTheme[0] ? this.currentTheme[0].id : this.currentTheme.id))
+          // sinon récupérer le premier 'thème' avec ses 'formations'
+          (formation.mysystheme_id === ((this.currentTheme[0] && this.currentTheme[0].id) || this.currentTheme.id))
         ) 
       });
       console.log("domaines", this.domaines);
@@ -179,11 +189,6 @@ export default {
       </li>
     </ul>
     <!-- end-themes -->
-    
-    <!-- scroll-buttons -->
-    <div class="d-flex justify-content-between">
-    </div>
-    <!-- scroll-buttons -->
 
 
     <!-- ################################################################# -->
@@ -192,56 +197,19 @@ export default {
 
       <div class="tab-pane fade show active" id="dev" role="tabpanel" aria-labelledby="dev-tab">
         <div id="dev">
-          <div class="t-cards">
-
-            <!-- card -->
-            <div :key="formIndex" v-for="(form, formIndex) in formations_by_theme" class="t-card">
-              <!-- card-header -->
-           
-              <div class="t-card-header">
-                <img class="t-card-img" :src="form.url_img" alt="card-img">
-                <span class="t-card-title">{{ form.name.substring(0, 70) }}</span>
-                <span class="t-card-desc">
-                  {{ form.description.substring(0, 70) + ".." }}
-                </span>
-                <span class="mt-2" :class="form.certif ? 'badge badge-success' : 'badge badge-warning'">
-                  {{form.certif ? "Certifiante" : "Non certifiante"}}
-                </span>
-              </div>
-              <!-- card-content -->
-              <div class="t-card-content">
-               <router-link :to="{name: 'detailformation', params: { form_param: form.id } }">
-                <h1 class="title h5 font-weight-bold">{{ form.name }}</h1>
-               </router-link>
-                <span class="description font-s4">
-                  {{ form.description.substring(0, 100) + ".." }}
-                </span>
-                <small class="text-secondary w-100 py-1">
-                  <span class="font-s3">Formateur : </span>
-                  <strong class="font-s3">
-                    {{ form.professeur ? form.professeur : "--" }}
-                  </strong>
-                </small>
-                
-                <div class="d-block">
-                  <router-link :to="{name: 'detailformation', params: { form_param: form.id } }" class="font-s3">En savoir plus</router-link>
-                </div>
-              </div>    
-            
-
-            </div>
-            <!-- end-card -->
-
-          </div>
-          <!-- end-cards -->
+          <formation-card :formations="formations_by_theme"></formation-card>
         </div>
       <!-- end-formation -->
       </div>
 
     </div>
     <!-- tab-content -->
-    <div v-else-if="formations_by_theme && !formations_by_theme.length && loading" class="loading">
-      <h3>Aucune formation pour l'instant.</h3>
+    <div v-else-if="formations_by_theme && !formations_by_theme.length && loading" class="loading px-4">
+      <h3 class="text_mysyscolor1 font-lg-s8 font-xs-s4 font-s4 text-center">
+        <!-- <i class="material-icons">assistant_photo</i> -->
+        Aucune formation pour l'instant.
+        <i class="material-icons d-sm-none">assistant_photo</i>
+      </h3>
     </div>
     <!-- LOADING .. -->
     <div v-else class="loading">
@@ -250,11 +218,10 @@ export default {
     <!-- LOADING .. -->
 
 
-
-
-
   </div>
   <!-- end-container-fluid -->
+  
+  <contactez></contactez>
 
 
 </div>
