@@ -1,6 +1,8 @@
 <script>
 export default {
-  props: ['formations'],
+  props: {
+    formations: {type: Array, required: true}
+  },
 }
 </script>
 
@@ -26,13 +28,14 @@ export default {
       </div>
       <!-- card-content -->
       <div class="t-card-content">
-        <router-link :to="{name: 'detailformation', params: { form_param: form.id } }">
-        <h1 class="title h5 font-weight-bold">{{ form.name }}</h1>
-        </router-link>
+        <!-- <router-link :to="{name: 'detailformation', params: { form_param: form.id } }"> -->
+          <h1 class="title h5 font-weight-bold">{{ form.name }}</h1>
+        <!-- </router-link> -->
         <span class="description font-s4">
           {{ form.description.substring(0, 100) + ".." }}
         </span>
-        <small class="text-secondary w-100 py-1">
+        <small class="text-secondary w-100 align-middle py-1">
+          <!-- <i class="material-icons">person_pin</i> -->
           <span class="font-s3">Formateur : </span>
           <strong class="font-s3">
             {{ form.professeur ? form.professeur : "--" }}
@@ -40,7 +43,9 @@ export default {
         </small>
         
         <div class="d-block">
-          <router-link :to="{name: 'detailformation', params: { form_param: form.id } }" class="font-s3">En savoir plus</router-link>
+          <router-link :to="{name: 'detailformation', params: { form_param: form.id } }" class="font-s3">
+            En savoir plus
+          </router-link>
         </div>
       </div>    
     

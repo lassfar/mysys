@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style lang="scss">
-  @import './assets/css/style.scss';
+  @import './assets/css/_style.scss';
   @import './assets/css/loading.scss';
 </style>
 

@@ -16,8 +16,7 @@ export default {
       isObjectifLoaded: false,
       form_param: undefined,
       formation: {},
-      formations_by_cat: {},
-      programme: null, prerequis: null, objectif: null,
+      formations_by_cat: [],
       data_insc:{
         nom: "",
         prenom: "",
@@ -30,7 +29,7 @@ export default {
         {symbol: '##', tag: 'h3', classes: 'subtitle font-lg-s7 font-md-s7 font-s5 text-capitalize mt-4', addition: ''}, // section title
         {symbol: '&&', tag: 'h4', classes: 'text_mysyscolor1 font-lg-s6 font-md-s6 font-s5 mt-4 mb-2', addition: '⬢ '}, // subtitle bold
         {symbol: '@@', tag: 'ul', classes: 'd-flex flex-row flex-wrap list-unstyled font-weight-bold', addition: ''}, // ul list container
-        {symbol: '__', tag: 'li', classes: 'font-weight-light pl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12', addition: '<strong>• </strong>'}, // li list element
+        {symbol: '__', tag: 'li', classes: 'font-weight-light pl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mb-1 h_fit_content', addition: '<strong>• </strong>'}, // li list element
         {symbol: '==', tag: 'li', classes: 'font-weight-light pl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mt-2', addition: '<strong class="text_mysyscolor1">✔ </strong>'},
         {symbol: '**', tag: 'strong', classes: '', addition: ''}, // text bold
         {symbol: '//', tag: 'p', classes: 'font-italic', addition: ''}, // italic
@@ -49,8 +48,13 @@ export default {
     this.FetchAPI(`/api/mysys/formations/${this.form_param}`, `/api/mysys/formationsbycat/`);
   },
   watch: {
-    // appeler la méthode si les paramètres changent
-    '$route': 'FetchAPI'
+    // déclencher une function si les "params" changent
+    $route: function(to, from) {
+      if (to !== from) {
+        this.Reset();
+        this.FetchAPI(`/api/mysys/formations/${this.form_param}`, `/api/mysys/formationsbycat/`);
+      } //end if
+    }
   },
   methods: {
     async FetchAPI(forma_url, theme_url) {
@@ -68,10 +72,19 @@ export default {
       document.title = `${this.formation.name} • ${(this.formation.description).substring(0, 50)}..`;
 
       // TRANSFORMER LES PARAGRAPH EN HTML
-      this.ConvertDataTextInView(this.programme, this.formation.programme, 'programme');
+      this.ConvertDataTextToView(this.formation.programme, 'programme');
       this.isProgramLoaded = true;
-      this.ConvertDataTextInView(this.objectif, this.formation.objectif, 'objectif');
+      this.ConvertDataTextToView(this.formation.objectif, 'objectif');
       this.isObjectifLoaded = true;
+      this.RemoveCurrentFormationObject(this.form_param)
+    },
+    async RemoveCurrentFormationObject(formId) {
+      // supprimer la formation actuelle affiché et récupérer le reste
+      // let arr = undefined;
+      this.formations_by_cat = this.formations_by_cat.filter((formation) => {
+        return formation.id !== formId;
+      });
+      console.log("form by cat ", this.formations_by_cat);
     },
     // async Getformations_by_cat(cat){
     //   console.log("cat : ", cat);
@@ -81,36 +94,47 @@ export default {
 
     // **** TRANSFORM CONTENT ****
     TransformContent(textToTransform, symbol, tag, classes, addition) {
-      return textToTransform.split(symbol).map(function(value, index) {
+      return textToTransform ? textToTransform.split(symbol).map(function(value, index) {
         if (index % 2 == 0) {
           return value;
         } else {
           return `<${tag} class="${classes}">${addition}${value}</${tag}>`;
         }
-      }).join("");
+      }).join("") : null;
     },
     ConvertStringToHtml(textToConvert, domId) {
       let domGoal = document.getElementById(domId);
       let newDom = document.createElement('article');
-      newDom.innerHTML = textToConvert;
-      domGoal.append(newDom);
+      newDom.innerHTML = textToConvert ? textToConvert : "(vide)";
+      domGoal.innerHTML = ""; // clean old paragraph
+      domGoal.append(newDom); // append new paragraph
       // console.log(domGoal.textContent);
     },
-    ConvertDataTextInView(myText, originText, domId) {
-      // converter le programme de formation au HTML
-      myText = originText;
+    ConvertDataTextToView(originText, domId) {
+      let myText = originText;
+      // remplacer les symboles du paragraph de formation par des tags HTML
       this.dataTransform.map((trans) => {
         let converted = this.TransformContent(myText, trans.symbol, trans.tag, trans.classes, trans.addition);
         myText = converted;
+        // console.log("domId", domId);
       });
-      // console.log("myText : ", myText);
+      // convert transformed text to HTML
       this.ConvertStringToHtml(myText, domId);
     },
     // **** END TRANSFORM CONTENT ****
+    //***************************************************************/
+    Reset() {
+      window.scrollTo(0, 0);
+      // récup. NOUVEAU paramètre
+      this.form_param = parseInt(this.$route.params.form_param);
+      // reset variable
+      this.isLoaded = this.isObjectifLoaded = this.isProgramLoaded = false;
+    },
+    //***************************************************************/
+    // **** UI METHODES ****
     ScrollUserTo(elemId) {
       document.getElementById(elemId).scrollIntoView();
     },
-    // UI METHODES
     DisplayCardOnScroll() {
       let card = document.getElementById('formationCard');
       // let formaJumboHeight = document.getElementById('formaSection').offsetHeight;
@@ -361,8 +385,7 @@ export default {
 
   </div>
   
-  <formation-similaire 
-    :form_param="form_param"
+  <formation-similaire
     :category="formations_by_cat.category"
     :formations="formations_by_cat">
   </formation-similaire>
