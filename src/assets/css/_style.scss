@@ -27,6 +27,7 @@ button,
 select,
 a {
   -webkit-tap-highlight-color: transparent !important;
+  outline: none !important;
 }
 img {
   -webkit-user-drag: none;
@@ -65,18 +66,17 @@ input[type=text], input[type=url], input[type=email], input[type=date], textarea
   transition: .1s all linear;
 }
 select {
-  border-color: transparent !important;
-  box-shadow: none !important;
-  border-bottom: .2rem solid #eaeaea !important;
-}
-select::-ms-expand {
-  display: none !important;
-}
-select {
   -webkit-appearance: none;
   -moz-appearance: none;
   text-indent: 1px;
   text-overflow: '';
+  border-color: transparent !important;
+  box-shadow: none !important;
+  border-bottom: .2rem solid #eaeaea !important;
+  outline: none;
+}
+select::-ms-expand {
+  display: none !important;
 }
 input[type=text]:focus, input[type=url]:focus, input[type=email]:focus, input[type=date]:focus, textarea:focus, select:focus {
   border: none !important;

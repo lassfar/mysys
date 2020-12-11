@@ -3,13 +3,12 @@ export default {
   name: 'Domaine',
   data () {
     return {
-			nom: null, prenom: null,
       currentDomaineId: null,
       domaines: [],
       themes: [],
       themes_domaine: [],
       begin: 0, end: 7,
-      loading: false,
+      isLoaded: false,
       error: null,
     }
   },
@@ -21,36 +20,21 @@ export default {
     '$route': 'FetchDomaines'
   },
   methods: {
-    // scroll
-    ScrollLeft(valToScroll) { 
-      let myTab = document.getElementById('myTab');
-      let amount = 0;
-      let scrollInterv = setInterval(function () {
-        myTab.scrollLeft += valToScroll;
-        amount += valToScroll;
-        amount === 200 | amount === -200 && clearInterval(scrollInterv);
-      }, 10);
-    },
-    
     // FETCH DATA
     async FetchDomaines(url) {
       // get domaines
       await this.axios.get(url)
         .then(response => this.domaines = response.data)
         .catch(error => this.error = error)
-   
-      
       // fetch themes after domaines
       this.FetchThemes('/api/mysys/themes');
-
-      this.loading = true;
+      this.isLoaded = true;
     },
     async FetchThemes(url) {
       // get themes
       await this.axios.get(url)
         .then(response => this.themes = response.data);
-    
-      
+      // select the first domain name
       this.currentDomaineId = this.domaines[0].id;
       this.FindThemesByDomaine(this.currentDomaineId);
     },
@@ -59,7 +43,6 @@ export default {
       this.themes_domaine = this.themes.filter((theme) => {
         return theme.mysysdomain_id === domaineId;
       });
-   
     },
     ShowMoreLess(begin, end) {
       let moreBtn = document.getElementById('showMoreBtn');
@@ -77,7 +60,16 @@ export default {
       // scroll to (top of) myTap after showing more items
       document.getElementById('myTab').scrollIntoView();
     },
-    
+    // scroll
+    ScrollLeft(valToScroll) { 
+      let myTab = document.getElementById('myTab');
+      let amount = 0;
+      let scrollInterv = setInterval(function () {
+        myTab.scrollLeft += valToScroll;
+        amount += valToScroll;
+        amount === 200 | amount === -200 && clearInterval(scrollInterv);
+      }, 10);
+    },
 
   } // METHODS
 }
@@ -98,7 +90,7 @@ export default {
 
     <!-- domaines -->
     <!-- if -->
-    <ul v-if="domaines && domaines.length && loading" class="onglet w-100 nav nav-tabs align-items-center" id="myTab" role="tablist">
+    <ul v-if="domaines && domaines.length && isLoaded" class="onglet w-100 nav nav-tabs align-items-center" id="myTab" role="tablist">
 
       <!-- button-left -->
       <button class="icon-btn" id="btnFixedRight" v-on:click="ScrollLeft(10)">
@@ -124,9 +116,9 @@ export default {
       <!-- end-btn-right -->
     </ul>
     <!-- else -->
-    <ul v-else-if="domaines && !domaines.length && !loading" class="onglet w-100 nav nav-tabs align-items-center text-center" id="myTab" role="tablist">
-      <li class="col-12 loading2">
-        <img src="../../assets/img/loading2.gif" class="loading_img">
+    <ul v-else-if="domaines && !domaines.length && !isLoaded" class="onglet w-100 nav nav-tabs align-items-center text-center" id="myTab" role="tablist">
+      <li class="col-12 loading p-0">
+        <img src="../../assets/img/loading2.gif" class="loading_img_sm">
       </li>
     </ul>
     <!-- else -->
@@ -139,7 +131,7 @@ export default {
     <!-- end-domaines -->
     
   
-    <div v-if="domaines && domaines.length && loading" class="tab-content" id="myTabContent">
+    <div v-if="domaines && domaines.length && isLoaded" class="tab-content" id="myTabContent">
       <!-- theme -->
       <div :class="(domIndex === 0 && 'tab-pane fade show active') || 'tab-pane fade show hide'" 
           role="tabpanel" :aria-labelledby="`${domIndex}-tab`"
@@ -185,8 +177,8 @@ export default {
     </div>
     <!-- tab-content -->
     <!-- LOADING .. -->
-    <div v-else-if="domaines && !domaines.length && !loading" class="loading">
-      <img :src="require('../../assets/img/loading.gif')" class="loading_img" alt="loading pic">
+    <div v-else-if="domaines && !domaines.length && !isLoaded" class="loading">
+      <img :src="require('../../assets/img/loading.gif')" class="loading_img_sm" alt="loading pic">
     </div>
     <!-- LOADING .. -->
     <!-- ERROR .. -->

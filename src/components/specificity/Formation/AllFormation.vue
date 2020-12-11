@@ -12,18 +12,20 @@ export default {
   },
   data () {
     return {
-      domaineId: null,
-      themeId: null,
-      domaine_param: null,
-      theme_param: null,
+      domaineId: undefined,
+      themeId: undefined,
+      domaine_param: undefined,
+      theme_param: undefined,
       currentDomaine: [],
       currentTheme: [],
-      domaines: null,
-      themes: null,
-      formations: null,
+      domaines: undefined,
+      themes: undefined,
+      formations: undefined,
       themes_by_domaine: [],
       formations_by_theme: [],
-      participants: [],
+      domaine_error: undefined,
+      theme_error: undefined,
+      forma_error: undefined,
       loading: false
     }
   },
@@ -39,25 +41,14 @@ export default {
     '$route': 'FetchAPI'
   },
   methods: {
-    // scroll
-    ScrollLeft(valToScroll) { 
-      let myTab = document.getElementById('myTab');
-      let amount = 0;
-      let scrollInterv = setInterval(function () {
-        myTab.scrollLeft += valToScroll;
-        amount += valToScroll;
-        amount === 200 | amount === -200 && clearInterval(scrollInterv);
-      }, 10);
-    },
-    
     // ****** FETCH DATA ******
     async FetchAPI(dom_url, thm_url, form_url) {
       // get domaines
-      await this.axios.get(dom_url).then(res => this.domaines = res.data);
+      await this.axios.get(dom_url).then(res => this.domaines = res.data).catch((err) => this.domaine_error = err);
       // get themes
-      await this.axios.get(thm_url).then(res => this.themes = res.data);
+      await this.axios.get(thm_url).then(res => this.themes = res.data).catch((err) => this.theme_error = err);
       // get formations
-      await this.axios.get(form_url).then(res => this.formations = res.data);
+      await this.axios.get(form_url).then(res => this.formations = res.data).catch((err) => this.forma_error = err);
       
       this.GetById(this.domaine_param, this.theme_param);
       this.GetChildsByParent(this.domaine_param, this.theme_param);
@@ -112,7 +103,6 @@ export default {
       });
       console.log("current domaine", this.currentDomaine, "current theme", this.currentTheme);
     },
-
     // EVENT TRIGGER
     FindThemesByDomaine(domaineId) {
       this.themes_by_domaine = this.themes.filter((themes) => {
@@ -124,7 +114,18 @@ export default {
       this.formations_by_theme = this.formations.filter((formation) => {
         return themeId && formation.mysystheme_id === themeId;
       });
-    }
+    },
+    // scroll
+    ScrollLeft(valToScroll) { 
+      let myTab = document.getElementById('myTab');
+      let amount = 0;
+      let scrollInterv = setInterval(function () {
+        myTab.scrollLeft += valToScroll;
+        amount += valToScroll;
+        amount === 200 | amount === -200 && clearInterval(scrollInterv);
+      }, 10);
+    },
+    
 
   } // METHODS
 }
@@ -141,10 +142,15 @@ export default {
     <div class="main-title">
       <span class="title">Nos Formations</span>
       <!-- <span class="subtitle">{{domaine[0].name}}</span> -->
-      <select class="subselect" v-model="domaineId" v-on:click="FindThemesByDomaine(domaineId)">
+      <select class="subselect" v-if="domaines && loading" v-model="domaineId" v-on:click="FindThemesByDomaine(domaineId)">
         <option :value="dom.id" :selected="((currentDomaine[0] ? currentDomaine[0].id : currentDomaine.id) === dom.id)" class="subelement" 
           :key="domIndex" v-for="(dom, domIndex) in domaines" >
           {{ dom.name }}
+        </option>
+      </select>
+      <select class="subselect" v-else>
+        <option class="subelement">
+          {{ domaine_error }}
         </option>
       </select>
     </div>
@@ -179,13 +185,20 @@ export default {
     <!-- else -->
     <ul v-else-if="themes_by_domaine && themes_by_domaine.length === 0 && loading" class="onglet w-100 nav nav-tabs align-items-center text-center" id="myTab" role="tablist">
       <li class="col-12">
-        <h4>Aucun sous domaine pour l'instant.</h4>
+        <h4>Aucun thème pour l'instant.</h4>
+      </li>
+    </ul>
+    <!-- else -->
+    <ul v-else-if="theme_error" class="onglet w-100 nav nav-tabs text-center" id="myTab" role="tablist">
+      <li class="w-100 d-flex flex-nowrap align-items-center justify-content-center">
+        <i class="material-icons">error</i>
+        <span>{{theme_error}}</span>
       </li>
     </ul>
     <!-- else -->
     <ul v-else class="onglet w-100 nav nav-tabs align-items-center text-center" id="myTab" role="tablist">
-      <li class="col-12 loading2">
-        <img src="../../../assets/img/loading2.gif" class="loading_img" alt="loading pic">
+      <li class="col-12 loading p-0">
+        <img src="../../../assets/img/loading2.gif" class="loading_img_sm" alt="loading pic">
       </li>
     </ul>
     <!-- end-themes -->
@@ -204,16 +217,24 @@ export default {
 
     </div>
     <!-- tab-content -->
-    <div v-else-if="formations_by_theme && !formations_by_theme.length && loading" class="loading px-4">
+    <div v-else-if="formations_by_theme && formations_by_theme.length === 0 && loading" class="loading px-4">
       <h3 class="text_mysyscolor1 font-lg-s8 font-xs-s4 font-s4 text-center">
         <!-- <i class="material-icons">assistant_photo</i> -->
         Aucune formation pour l'instant.
         <i class="material-icons d-sm-none">assistant_photo</i>
       </h3>
     </div>
+    <!-- ERROR .. -->
+    <div v-else-if="forma_error" class="loading">
+      <li class="w-100 d-flex flex-nowrap align-items-center justify-content-center">
+        <i class="material-icons">error</i>
+        <span class="font-s10">{{forma_error}}</span>
+      </li>
+    </div>
+    <!-- ERROR .. -->
     <!-- LOADING .. -->
     <div v-else class="loading">
-      <img src="../../../assets/img/loading.gif" class="loading_img">
+      <img src="../../../assets/img/loading.gif" class="loading_img_sm">
     </div>
     <!-- LOADING .. -->
 

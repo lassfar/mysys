@@ -1,5 +1,8 @@
 <script>
 export default {
+  mounted() {
+
+  },
   created() {
     window.scrollTo(0, 0);
     document.title = "MySYS • Contact";

@@ -1,16 +1,16 @@
 @import 'variables';
 
-
 .modal-content {
   border: none !important;
-  border-radius: 0rem !important;
+  border-radius: 1rem !important;
 }
 .modal-header {
-  border: none !important;
-  border-radius: 0rem !important;
-  background: $mysyscolor1 !important; color:$light !important;
   display: flex;
   justify-content: center !important;
+  background: $mysyscolor1 !important; color: $light !important;
+  border: none !important;
+  border-radius: .9rem !important;
+  box-shadow: 0 .3rem .1rem 0rem $light2;
 }
 .modal-footer {
   border: none !important;

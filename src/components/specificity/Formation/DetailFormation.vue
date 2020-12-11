@@ -2,12 +2,16 @@
 import Contactez from '../../commun/Contactez.vue';
 import NavBarForDFormation from '../../commun/NavBarForDFormation.vue';
 import FormationSimilaire from './FormationSimilaire.vue';
+import InscriptionModal from './InscriptionModal.vue';
+import SocialShareModal from './SocialShareModal.vue';
 export default {
   name: 'DetailFormation',
   components: {
     NavBarForDFormation,
     Contactez,
-    FormationSimilaire
+    FormationSimilaire,
+    InscriptionModal,
+    SocialShareModal
   },
   data() {
     return {
@@ -17,14 +21,6 @@ export default {
       form_param: undefined,
       formation: {},
       formations_by_cat: [],
-      data_insc:{
-        nom: "",
-        prenom: "",
-        tele: "",
-        email: "",
-        ville: "",
-        type: "",
-      },
       dataTransform : [
         {symbol: '##', tag: 'h3', classes: 'subtitle font-lg-s7 font-md-s7 font-s5 text-capitalize mt-4', addition: ''}, // section title
         {symbol: '&&', tag: 'h4', classes: 'text_mysyscolor1 font-lg-s6 font-md-s6 font-s5 mt-4 mb-2', addition: '⬢ '}, // subtitle bold
@@ -36,22 +32,28 @@ export default {
         {symbol: '~~', tag: 'u', classes: 'text-underline', addition: ''}, // underline
         {symbol: '||', tag: 'mark', classes: 'bg_gradient', addition: ''},
         {symbol: '""', tag: 'q', classes: '', addition: ''},
-      ]
+      ],
+      // styles
+      isFormSimShowed: false,
+      formSimStyle: "translate(100%)"
     }
+  },
+  mounted() {
+    this.ResetAll();
   },
   created() {
     window.scrollTo(0, 0);
     document.title = "Formation en --";
     window.addEventListener('scroll', this.DisplayCardOnScroll);
     // récupérer les formations
-    this.form_param = Math.floor(this.$route.params.form_param);
+    this.form_param = Number.parseInt(this.$route.params.form_param);
     this.FetchAPI(`/api/mysys/formations/${this.form_param}`, `/api/mysys/formationsbycat/`);
   },
   watch: {
     // déclencher une function si les "params" changent
     $route: function(to, from) {
       if (to !== from) {
-        this.Reset();
+        this.ResetAll();
         this.FetchAPI(`/api/mysys/formations/${this.form_param}`, `/api/mysys/formationsbycat/`);
       } //end if
     }
@@ -76,9 +78,9 @@ export default {
       this.isProgramLoaded = true;
       this.ConvertDataTextToView(this.formation.objectif, 'objectif');
       this.isObjectifLoaded = true;
-      this.RemoveCurrentFormationObject(this.form_param)
+      this.RemoveCurrentFormationObject(this.form_param);
     },
-    async RemoveCurrentFormationObject(formId) {
+    RemoveCurrentFormationObject(formId) {
       // supprimer la formation actuelle affiché et récupérer le reste
       // let arr = undefined;
       this.formations_by_cat = this.formations_by_cat.filter((formation) => {
@@ -123,12 +125,16 @@ export default {
     },
     // **** END TRANSFORM CONTENT ****
     //***************************************************************/
-    Reset() {
+    ResetAll() {
       window.scrollTo(0, 0);
       // récup. NOUVEAU paramètre
       this.form_param = parseInt(this.$route.params.form_param);
       // reset variable
       this.isLoaded = this.isObjectifLoaded = this.isProgramLoaded = false;
+      // cacher la section 'formationSimilaire'
+      let formaSim = document.getElementById('formationSimilaire');
+      formaSim.style.opacity = 0;
+      this.isFormSimShowed = false;
     },
     //***************************************************************/
     // **** UI METHODES ****
@@ -138,40 +144,40 @@ export default {
     DisplayCardOnScroll() {
       let card = document.getElementById('formationCard');
       // let formaJumboHeight = document.getElementById('formaSection').offsetHeight;
-      let formaSimHeight = document.getElementById('formationSimilaire').offsetHeight;
+      let formaSim = document.getElementById('formationSimilaire');
       let formaBanner = document.getElementById('formaBanner');
       let contactezHeight = document.getElementById('contactez').offsetHeight;
       let detailFormaHeight = document.getElementById('detailFormation').offsetHeight;
       let FooterHeight = document.getElementById('mysysFooter').offsetHeight;
 
       let verticalPos = window.scrollY; // récupérer la position de scroll en px
-      let divHeight = detailFormaHeight - formaSimHeight - contactezHeight - FooterHeight; // récupérer la taille vertical de 'div'
+      let divHeight = detailFormaHeight - formaSim.offsetHeight - contactezHeight - FooterHeight; // récupérer la taille vertical de 'div'
       // console.log('vert pos : ' + verticalPos + ' div height : ' + divHeight);
 
       if (screen.width >= 1024) { // fixer 'card' avec les grandes écrans
         formaBanner.setAttribute('style', 'display: none !important');
         if (verticalPos > 100 && verticalPos < divHeight) {
-          card.style.position = "fixed";
-          card.style.top = 0;
-          card.style.display = "block";
+          card.setAttribute("style", "position: fixed; top: 0; opacity: 1; z-index: 10;");
+          // hide formSimilaire on scroll
+          if (!this.isFormSimShowed) {
+            formaSim.setAttribute("style", "opacity: 0");
+          }
         } else { // laisser 'card' avec sa position d'origine 
-          card.style.position = "absolute";
-          card.style.display = "block";
+          card.setAttribute("style", "position: absolute; opacity: 1; z-index: 10;");
         }
         if (verticalPos > divHeight) {
-          card.style.display = "none";
-          // card.style.bottom = 0;
+          card.setAttribute('style', "opacity: 0; z-index: 0;");
+          // *** show formSimilaire on scroll ***
+          formaSim.setAttribute("style", "opacity: 1");
+          this.isFormSimShowed = true;
         }
       } else if (screen.width < 1024) { // laisser 'card' relative avec le jumbotron (position d'origine relative)
         card.style.position = "relative";
         // banner formation
         if (verticalPos > 700 && verticalPos < divHeight) {
-          formaBanner.style.display = "block";
-          formaBanner.style.position = "fixed";
-          formaBanner.style.bottom = 0;
+          formaBanner.setAttribute("style", "display: block; position: fixed; bottom: 0;");
         } else { // laisser 'formaBanner' avec sa position d'origine 
-          formaBanner.style.display = "block";
-          formaBanner.style.position = "relative";
+          formaBanner.setAttribute("style", "display: block; position: relative;");
         }
         if (verticalPos > divHeight) {
           formaBanner.style.display =  "none";
@@ -386,161 +392,19 @@ export default {
   </div>
   
   <formation-similaire
-    :category="formations_by_cat.category"
+    :isLoaded="isLoaded"
+    :category="formation.category"
     :formations="formations_by_cat">
   </formation-similaire>
 
   <contactez></contactez>
 
-   <div class="modal fade" id="inscriptionModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <span class="modal-title h1" id="exampleModalLabel">S'inscrire à {{ formation.name }}</span>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span class="text-light" aria-hidden="true">
-              <i class="material-icons">close</i>
-            </span>
-          </button>
-        </div>
-        <div class="modal-body p-4">
-        
-          <div class="container-fluid">
-            <form>
-              <!-- nom et prenom -->
-              <div class="row">
-                <div class="col-12 col-md-6 col-lg-6 p-2">
-                  <label for="nom" class="col-form-label">Nom</label>
-                  <input type="text" class="form-control" id="nom" v-model="data_insc.nom" placeholder="Alaoui" />
-                </div>
-                <div class="col-12 col-md-6 col-lg-6 p-2">
-                  <label for="prenom" class="col-form-label">Prénom</label>
-                  <input type="text" class="form-control" id="prenom" v-model="data_insc.prenom" placeholder="Ahmad" />
-                </div>
-              </div>
-              <!-- row -->
-              <!-- tele adresse -->
-              <div class="row">
-                <div class="col-12 p-2">
-                  <label for="tele" class="col-form-label">Téléphone</label>
-                  <input type="text" class="form-control" id="tele" v-model="data_insc.tele" placeholder="+212 22 22 22 22" />
-                </div>
-                <div class="col-12 p-2">
-                  <label for="email" class="col-form-label">Email</label>
-                  <input type="text" class="form-control" id="email" v-model="data_insc.email" placeholder="Ton adresse e-mail" />
-                </div>
-              </div>
+  <inscription-modal v-if="isLoaded" :formation="formation">
+  </inscription-modal>
 
-              <div class="row my-3">
-                <div class="col-6 p-2">
-                  <label for="type" class="col-form-label mr-2">Vous êtes?</label>
-                    <select name="type" id="type" v-model="data_insc.type">
-                     <option value="">Entreprise</option>
-                     <option value="">Particulier</option>
-                   </select>
-                </div>
-                <div class="col-6 p-2">
-                  <label for="ville" class="col-form-label mr-2">Ville</label>
-                  <select name="ville" id="ville" v-model="data_insc.ville">
-                  <option value="">Casablanca</option>
-                  <option value="">Rabat</option>
-                  <option value="">Tanger</option>
-                  </select>
-                </div>
-              </div>
-         
-            </form>
-          </div>
-          <!-- container-fluid -->
-          
-          <div class="modal-footer">
-            <button type="button" class="btn btn-light" data-dismiss="modal">Fermer</button>
-            <button type="button" class="btn btn-primary text-light border-0">S'inscrire</button>
-          </div>
-
-        </div>
-        <!-- end-modal-body -->
-
-        
-      </div>
-    </div>
-  </div>
-
-
-  <!-- MODALS -->
-  <div class="modal fade bd-example-modal-lg" id="inscriptionModal44" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-     <div class="modal-content">
-       <div class="modal-header">
-         <span class="modal-title h1" id="exampleModalLabel">Partager sur les réseaux sociaux</span>
-         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-           <span class="text-light" aria-hidden="true">
-             <i class="material-icons">close</i>
-           </span>
-         </button>
-       </div>
-       <div class="modal-body p-3">
-         <div class="container-fluid p-5">
-           <div class="row">
-            <ShareNetwork
-                class="btn btn-primary"
-                network="facebook"
-                url="google.com"
-                :title="formation.name"
-                :description="formation.description"
-                :hashtags="formation.category"
-              >
-              <i class="fa fa-facebook-f"></i> en Facebook
-            </ShareNetwork>
-            <ShareNetwork
-              style="background-color:#28adff;"
-              class="btn text-light"
-              network="twitter"
-              url="google.com"
-              :title="formation.name"
-              :hashtags="formation.category"
-              >
-              <i class="fa fa-twitter"></i> en Twitter
-            </ShareNetwork>
-            <ShareNetwork
-              class="btn text-light"
-              style="background-color:#0270ad;"
-              network="linkedin"
-              url="google.com"
-              :title="formation.name"
-              >
-              <i class="fa fa-linkedin"></i> en LinkedIn
-            </ShareNetwork>
-                <ShareNetwork
-                class="btn btn-success"
-                network="whatsapp"
-                url="google.com"
-                :title="formation.name"
-                :description="formation.description"
-                :hashtags="formation.category"
-                >
-               <i class="fa fa-whatsapp"></i> en WhatsApp
-               </ShareNetwork>
-                <ShareNetwork
-                class="btn btn-danger"
-               network="email"
-               url="google.com"
-               :title="formation.name"
-               :description="formation.description"
-               :hashtags="formation.category"
-                >
-               <i class="fa fa-envelope-open"></i> en Email
-               </ShareNetwork>
-             </div>
-         </div>
-         <div class="modal-footer ">
-           <button type="button" class="btn btn-light" data-dismiss="modal">Fermer</button>
-         </div>
-     </div>
-   </div>
-  </div>
- </div>
- <!-- END-MODALS -->
+  <social-share-modal v-if="isLoaded" :formation="formation"></social-share-modal>
 
 </div>
+<!-- END-DETAIL-FORMATION -->
+
 </template>
