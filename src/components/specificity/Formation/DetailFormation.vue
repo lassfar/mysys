@@ -1,6 +1,6 @@
 <script>
-import Contactez from '../../commun/Contactez.vue';
-import NavBarForDFormation from '../../commun/NavBarForDFormation.vue';
+import Contactez from '../../common/Contactez.vue';
+import NavBarForDFormation from '../../common/NavBarForDFormation.vue';
 import FormationSimilaire from './FormationSimilaire.vue';
 import InscriptionModal from './InscriptionModal.vue';
 import SocialShareModal from './SocialShareModal.vue';
@@ -25,9 +25,9 @@ export default {
         {symbol: '##', tag: 'h3', classes: 'subtitle font-lg-s7 font-md-s7 font-s5 text-capitalize mt-4', addition: ''}, // section title
         {symbol: '&&', tag: 'h4', classes: 'text_mysyscolor1 font-lg-s6 font-md-s6 font-s5 mt-4 mb-2', addition: '⬢ '}, // subtitle bold
         {symbol: '@@', tag: 'ul', classes: 'd-flex flex-row flex-wrap list-unstyled font-weight-bold', addition: ''}, // ul list container
-        {symbol: '__', tag: 'li', classes: 'font-weight-light pl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mb-1 h_fit_content', addition: '<strong>• </strong>'}, // li list element
+        {symbol: '__', tag: 'li', classes: 'font-weight-light pl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mb-1', addition: '<strong>• </strong>'}, // li list element
         {symbol: '==', tag: 'li', classes: 'font-weight-light pl-3 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 mt-2', addition: '<strong class="text_mysyscolor1">✔ </strong>'},
-        {symbol: '**', tag: 'strong', classes: '', addition: ''}, // text bold
+        {symbol: '**', tag: 'strong', classes: 'text_bold', addition: ''}, // text bold
         {symbol: '//', tag: 'p', classes: 'font-italic', addition: ''}, // italic
         {symbol: '~~', tag: 'u', classes: 'text-underline', addition: ''}, // underline
         {symbol: '||', tag: 'mark', classes: 'bg_gradient', addition: ''},

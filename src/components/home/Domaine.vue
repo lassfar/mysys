@@ -75,7 +75,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import '../../assets/css/domaine.scss';
 </style>
 
@@ -153,7 +153,7 @@ export default {
                 </p>
                                 
                 <router-link class="text-light font_sm d-block" :to="{ name: 'allformation', params: {theme_param: theme.id, domaine_param: currentDomaineId} }">
-                    En savoir plus
+                  En savoir plus
                 </router-link>
 
               </div>

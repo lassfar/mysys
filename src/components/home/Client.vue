@@ -19,7 +19,7 @@ export default {
 <template>
 <div id="client">
 
-  <div class="container-fluid mb-4 border-bottom">
+  <div class="container-fluid border-bottom">
 
     <div class="row">
       <div class="card col-lg-6 col-sm-12 bg_gradient p-3 border-0 radius_0">

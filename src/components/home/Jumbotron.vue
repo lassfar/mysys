@@ -1,10 +1,10 @@
 <script>
 
-import Countdown from 'countdown-vue'
+import Search from '../common/Search.vue'
  /* eslint-disable */
 export default {
   name: 'Jumbotron',
-  components: { Countdown },
+  components: { Search },
 	data () {
 		return {
 			nom: null, prenom: null, tele: null, email: null, type: null, ville: null,
@@ -42,20 +42,21 @@ export default {
 </style>
 
 <template>
-	<div class="container-fluid">
-		<div class="text-light mt-5 p-4">
+	<section class="container-fluid d-flex flex-column justify-items-center my-5">
+		<div class="text-light p-4">
 			<!-- <Countdown end="August 22, 2021" showDays showHours showMinutes showSeconds></Countdown></div> -->
-			<router-link to="about" class="text-light font_sm">savoir plus</router-link>
-			<h1 class="display-3 font-xs-s8 text_bold">MySYS, UNE EXPERTISE AU SERVICE DE L'ENTREPRISE.</h1>
-			<p class="font-weight-light text-justify">Le lorem ipsum est, en imprimerie, une suite de mots sans
-				signification utilisée à titre provisoire pour calibrer une mise en page, le texte 
-				définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est a
-				chevée. Généralement, on utilise un texte en faux latin, le Lorem ipsum ou Lipsum.</p>
+			<!-- <router-link to="about" class="text-light font_sm">savoir plus</router-link> -->
+			<h1 class="display-3 font-xs-s8 text_bold">
+				<span class="display-3 font-xs-s8 text_bold text_mysyscolor1">MYSYS</span>,
+				UNE EXPERTISE AU SERVICE DE L'ENTREPRISE.
+			</h1>
 		</div>
+
+		<search></search>
 
 		<div class="row text-light">
 
-			<div class="card col-lg-4 col-sm-12 bg-primary text_bold p-2 border-0 radius_0"
+			<div class="card col-lg-4 col-sm-12 bg-primary text_bold p-2 border-outline-0"
 					v-for="(jcard, jumboIndex) in jumbotronCards" :key="`jumbo${jumboIndex}`" >
 				<div class="card-body font-weight-light">
 					<h3 class="text_bold">
@@ -71,7 +72,7 @@ export default {
 		</div>
 		<!-- end-row -->
 	    
-	</div>
+	</section>
 	<!-- end-container-fluid -->
 	
 </template>

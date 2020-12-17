@@ -1,5 +1,5 @@
 <script>
-import Footer from './components/commun/Footer.vue';
+import Footer from './components/common/Footer.vue';
 
 export default {
   name: 'App',
@@ -10,10 +10,10 @@ export default {
   },
   created() {
     window.addEventListener('scroll', this.DisplayBackTopOnScroll);
-    this.ScrollToTop();
+    this.ScrollToTopEvent();
   },
   methods: {
-    ScrollToTop() {
+    ScrollToTopEvent() {
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
     },
@@ -39,7 +39,7 @@ export default {
     <router-view></router-view>
     <Footer/>
 
-    <a href="#" :click="ScrollToTop">
+    <a href="#" :click="ScrollToTopEvent">
       <i class="material-icons" id="back_to_top">arrow_upward</i>
     </a>
     

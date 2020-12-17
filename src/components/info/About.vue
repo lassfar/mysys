@@ -38,7 +38,7 @@ export default {
       <li>Développement Web/Standard/Mobile</li>
       <li>Project Management•Gouvernance IT</li>
       <li>Sécurité Informatique</li>
-      <li>Réseaux Et Télécommunications</li>
+      <li>Réseaux Et Télécommonications</li>
       <li>ERP/SAP•Bases De Données</li>
       <li>Systèmes D’exploitation Et Virtualisation</li>
       <li>Nouvelles Technologies : Big Data, Business Intelligence</li>
@@ -93,7 +93,7 @@ export default {
           </div>
           <ul style="list-style-type: none;">
           <li><p><span class="text_bold">L'Engagement :</span> Nous donnons le meilleur de nous même et nous sommes engagés à apporterun vrai retour sur investissement et de la valeur tangible à nos clients </p></li>
-          <li><p><span class="text_bold">La Confiance :</span> Nous construisons des relations de confiance Gagnant-Gagnant avec nos partenaires basées sur une écoute permanente et une communication transparente</p></li>
+          <li><p><span class="text_bold">La Confiance :</span> Nous construisons des relations de confiance Gagnant-Gagnant avec nos partenaires basées sur une écoute permanente et une commonication transparente</p></li>
           <li><p><span class="text_bold">L'Innovation :</span> Nous sommes tournés vers l'avenir, avec une pédagogienovatrice et une veille permanente pour faire monter en compétence nos clients sur les dernières tendances en technologies et en Savoir-être</p></li>
           </ul>
         </div>
@@ -118,7 +118,7 @@ export default {
 </template>
 
 <script>
-import NavBar from '../commun/NavBar.vue';
+import NavBar from '../common/NavBar.vue';
 import Client from '../home/Client';
 import Partenaire from '../home/Partenaire';
 

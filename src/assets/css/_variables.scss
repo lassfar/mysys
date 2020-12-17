@@ -12,6 +12,7 @@ $teal: #20c997;
 $cyan: #17a2b8;
 $white: #fff;
 $gray: #6c757d;
+$lightgray: #d2d8dd;
 $graydark: #495158;
 $primary: #007bff;
 $secondary: #6c757d;
@@ -27,3 +28,8 @@ $mysyscolor2: #3158cd;
 $transparent: rgba(0, 0, 0, 0);
 $gradient: linear-gradient(174deg, rgba(0,0,0,1) 0%, rgba(24,142,238,1) 0%, rgba(49,88,205,1) 100%);
 $gradient_2: linear-gradient(174deg, rgba(0,0,0,1) 0%, rgba(24,142,238,1) 0%, rgba(49,88,205,1) 100%);
+
+.border-outline-0 {
+  border: none !important;
+  outline: none !important;
+}

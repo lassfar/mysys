@@ -1,5 +1,4 @@
 <script>
-import Inscription from './Inscription';
 import Domaine from './Domaine';
 import Jumbotron from './Jumbotron';
 import OurService from './OurService';
@@ -8,14 +7,14 @@ import Client from './Client';
 import Partenaire from './Partenaire';
 import Expertise from './Expertise';
 import Mission from './Mission';
-import NavBarForHome from '../commun/NavBarForHome.vue';
+import NavBarForHome from '../common/NavBarForHome.vue';
+import Contactez from '../common/Contactez.vue';
 
 
 export default {
   name: 'Home',
   components: {
     NavBarForHome,
-    Inscription,
     Domaine,
     Jumbotron,
     OurService,
@@ -23,10 +22,23 @@ export default {
     Chiffre,
     Expertise,
     Mission,
-    Client
+    Client,
+    Contactez,
+  },
+  data () {
+    return {
+      currentDomaineId: null,
+      domaines: [],
+      themes: [],
+      themes_domaine: [],
+      begin: 0, end: 7,
+      isLoaded: false,
+      error: null,
+    }
   },
   created() {
     document.title = "MySYS • Une plateforme des formations certifiantes";
+    this.FetchDomaines('/api/mysys/domaines');
   },
   mounted() {
   },
@@ -38,25 +50,31 @@ export default {
 
 <template>
 <div id="home">
-  <div class="j-bg-card1">
-    <NavBarForHome/>
-    <Inscription/>
-    <Jumbotron/>
+  <div class="bg_jumbo">
+    <nav-bar-for-home></nav-bar-for-home>
+    <jumbotron></jumbotron>
   </div>
-  <Domaine/>
-  <OurService />
+
+  <domaine></domaine>
+  <our-service></our-service>
+
   <div class="d-flex flex-wrap">
     <div class="col-12 col-lg-6 col-xl-6">
-      <Expertise />
+      <expertise></expertise>
     </div>
     <div class="col-12 col-lg-6 col-xl-6">
-      <Mission />
+      <mission></mission>
     </div>
   </div>
 
-  <Partenaire />
-  <Chiffre />
-  <Client />
+  <partenaire></partenaire>
+  <chiffre></chiffre>
+  <client></client>
+
+  <div class="line bg_light_2 py-4">
+    <hr />
+  </div>
+  <contactez></contactez>
   
 </div>
 </template>

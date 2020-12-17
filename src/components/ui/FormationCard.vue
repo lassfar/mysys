@@ -18,12 +18,12 @@ export default {
       <!-- card-header -->
       <div class="t-card-header">
         <img class="t-card-img" :src="form.url_img" alt="card-img">
-        <span class="t-card-title">{{ form.name.substring(0, 70) }}</span>
+        <span class="t-card-title">{{ form.name ? form.name.substring(0, 70) : "--" }}</span>
         <span class="t-card-desc">
-          {{ form.description.substring(0, 70) + ".." }}
+          {{ form.description ? form.description.substring(0, 70) + ".." : "--" }}
         </span>
         <span class="mt-2" :class="form.certif ? 'badge badge-success' : 'badge badge-warning'">
-          {{form.certif ? "Certifiante" : "Non certifiante"}}
+          {{ form.certif ? "Certifiante" : "Non certifiante" }}
         </span>
       </div>
       <!-- card-content -->
@@ -32,7 +32,7 @@ export default {
           <h1 class="title h5 font-weight-bold">{{ form.name }}</h1>
         <!-- </router-link> -->
         <span class="description font-s4">
-          {{ form.description.substring(0, 100) + ".." }}
+          {{ form.description ? form.description.substring(0, 100) + ".." : "--" }}
         </span>
         <small class="text-secondary w-100 align-middle py-1">
           <!-- <i class="material-icons">person_pin</i> -->

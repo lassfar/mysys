@@ -32,18 +32,15 @@
   transform-origin: top;
   cursor: pointer;
   z-index: 2 !important;
-}
-.m-card:hover {
-  .m-card-header {
-    border-radius: .5rem .5rem  0 0;
-  }
-  .m-card-img {
-    filter: brightness(80%);
-    filter: blur(5px);
-    opacity: 0;
-  }
-  .m-card-content {
-    opacity: 1;
+  // m-card:hover
+  &:hover {
+    .m-card-header { border-radius: .5rem .5rem  0 0; }
+    .m-card-img {
+      filter: brightness(80%);
+      filter: blur(5px);
+      opacity: 0;
+    }
+    .m-card-content { opacity: 1; }
   }
 }
 .m-card .m-card-header, .m-card .m-card-content {

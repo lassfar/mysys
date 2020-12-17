@@ -90,7 +90,7 @@ export default {
 </template>
 
 <script>
-import NavBar from '../commun/NavBar.vue';
+import NavBar from '../common/NavBar.vue';
 
 
 export default {
