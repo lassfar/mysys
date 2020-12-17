@@ -38,7 +38,6 @@ export default {
   },
   created() {
     document.title = "MySYS • Une plateforme des formations certifiantes";
-    this.FetchDomaines('/api/mysys/domaines');
   },
   mounted() {
   },
