@@ -32,6 +32,7 @@ export default {
 <style lang="scss">
   @import './assets/css/_style.scss';
   @import './assets/css/loading.scss';
+  @import './assets/css/modal.scss';
 </style>
 
 <template>

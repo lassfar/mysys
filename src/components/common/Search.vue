@@ -9,9 +9,6 @@ export default {
     }
   },
   methods: {
-    async MysysSearch() {
-      
-    },
     ToggleSearchList() {
       let searchResult = document.getElementById('searchResult').classList;
       if (searchResult.contains('d-none')) {
@@ -26,7 +23,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import '../../assets/css/search.scss';
 </style>
 
