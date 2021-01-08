@@ -27,19 +27,13 @@ export default {
   },
   data () {
     return {
-      currentDomaineId: null,
-      domaines: [],
-      themes: [],
-      themes_domaine: [],
-      begin: 0, end: 7,
-      isLoaded: false,
       error: null,
     }
   },
+  mounted() {
+  },
   created() {
     document.title = "MySYS • Une plateforme des formations certifiantes";
-  },
-  mounted() {
   },
   methods: {
   } // mounted

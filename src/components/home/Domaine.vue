@@ -1,64 +1,35 @@
 <script>
+import { mapActions } from 'vuex';
+import { store } from '../store';
+import Theme from './Theme';
+
 export default {
   name: 'Domaine',
-  data () {
-    return {
-      currentDomaineId: null,
-      domaines: [],
-      themes: [],
-      themes_domaine: [],
-      begin: 0, end: 7,
-      isLoaded: false,
-      error: null,
-    }
+  components: {
+    Theme
   },
-  created () {
-    this.FetchDomaines('/api/mysys/domaines');
-  },
-  watch: {
-    // appeler la méthode si les paramètres changent
-    '$route': 'FetchDomaines'
-  },
+  mounted () {
+  }, // MOUNTED
+  computed: {
+    domaines() { return store.state.domaines; },
+    themes_by_domaine() { return store.state.themes_by_domaine; },
+    formations_by_theme() { return store.state.formations_by_theme; },
+    is_domaineLoaded() { return store.state.is_domaineLoaded; },
+    is_themeLoaded() { return store.state.is_themeLoaded; },
+    is_formationLoaded() { return store.state.is_formationLoaded; },
+    is_themeByDomaineLoaded() { return store.state.is_themeByDomaineLoaded; },
+    is_formationByThemeLoaded() { return store.state.is_formationByThemeLoaded; }
+  }, // computed
   methods: {
-    // FETCH DATA
-    async FetchDomaines(url) {
-      // get domaines
-      await this.axios.get(url)
-        .then(response => this.domaines = response.data)
-        .catch(error => this.error = error)
-      // fetch themes after domaines
-      this.FetchThemes('/api/mysys/themes');
-      this.isLoaded = true;
-    },
-    async FetchThemes(url) {
-      // get themes
-      await this.axios.get(url)
-        .then(response => this.themes = response.data);
-      // select the first domain name
-      this.currentDomaineId = this.domaines[0].id;
-      this.FindThemesByDomaine(this.currentDomaineId);
-    },
-    // get Themes with the selected Domaine
-    async FindThemesByDomaine(domaineId) {
-      this.themes_domaine = this.themes.filter((theme) => {
-        return theme.mysysdomain_id === domaineId;
-      });
-    },
-    ShowMoreLess(begin, end) {
-      let moreBtn = document.getElementById('showMoreBtn');
-      if (begin === 0 && end === 7) {
-        this.begin = 0;
-        this.end = 100;
-        moreBtn.innerHTML = "△ Afficher moins";
-        document.getElementById('setShadow').classList.remove("show_more_shadow");
-      } else if (begin === 0 && end === 100) {
-        this.begin = 0;
-        this.end = 7;
-        moreBtn.innerHTML = "▽ Afficher plus";
-        document.getElementById('setShadow').classList.add("show_more_shadow");
-      }
-      // scroll to (top of) myTap after showing more items
-      document.getElementById('myTab').scrollIntoView();
+    ...mapActions([
+      'FetchDomaineData',
+      'FetchThemeData',
+      'FetchFormationData',
+      'SetThemesByDomaine',
+      'SetFormationsByTheme'
+    ]),
+    handleAction(action, targetId = null) {
+      store.dispatch(action, targetId);
     },
     // scroll
     ScrollLeft(valToScroll) { 
@@ -90,85 +61,61 @@ export default {
 
     <!-- domaines -->
     <!-- if -->
-    <ul v-if="domaines && domaines.length && isLoaded" class="onglet w-100 nav nav-tabs align-items-center" id="myTab" role="tablist">
+    <ul v-if="is_domaineLoaded && domaines && domaines.length" class="onglet w-auto nav nav-tabs align-items-center" id="myTab" role="tablist">
 
       <!-- button-left -->
-      <button class="icon-btn" id="btnFixedRight" v-on:click="ScrollLeft(10)">
+      <button class="icon-btn bg-light" id="btnFixedRight" @click="ScrollLeft(10)">
         <i class="material-icons">chevron_right</i>
       </button>
       <!-- end-btn-left -->
 
-      <li class="col-lg-6 col-md-6 col-12" :key="domIndex" v-for="(dom, domIndex) in domaines"
-        v-on:click="FindThemesByDomaine(dom.id)">
-        <a :class="(domIndex === 0 && 'nav-link active') || 'nav-link'" :id="`${dom.id}-tab`" data-toggle="tab" :href="'#'+dom.id" role="tab" :aria-controls="dom.id" aria-selected="true">
+      <li class="col-lg-6 col-md-6 col-12" :key="`dom${domIndex}`" v-for="(dom, domIndex) in domaines"
+        @click="handleAction('SetThemesByDomaine', dom.id)">
+
+        <router-link :class="(domIndex === 0 && 'nav-link active') || 'nav-link'" 
+          :id="`domaine${dom.id}-tab`" :to="`#domaine${dom.id}`" data-toggle="tab" role="tab" :aria-controls="dom.id" aria-selected="true">
           <div class="text-center">
-            <span class="text-nowrap">
+            <span class="">
               {{dom.name ? dom.name : "--"}}
             </span>
           </div>
-        </a>
+        </router-link>
+
       </li>
 
       <!-- button-right -->
-      <button class="icon-btn" id="btnFixedLeft" v-on:click="ScrollLeft(-10)">
+      <button class="icon-btn bg-light" id="btnFixedLeft" @click="ScrollLeft(-10)">
         <i class="material-icons">chevron_left</i>
       </button>
       <!-- end-btn-right -->
     </ul>
     <!-- else -->
-    <ul v-else-if="domaines && !domaines.length && !isLoaded" class="onglet w-100 nav nav-tabs align-items-center text-center" id="myTab" role="tablist">
+    <ul v-else-if="is_domaineLoaded && domaines && !domaines.length" class="onglet w-100 nav nav-tabs align-items-center text-center" id="myTab" role="tablist">
       <li class="col-12 loading p-0">
         <img src="../../assets/img/loading2.gif" class="loading_img_sm">
       </li>
     </ul>
     <!-- else -->
-    <ul v-else-if="error" class="onglet w-100 nav nav-tabs text-center" id="myTab" role="tablist">
+    <ul v-else class="onglet w-100 nav nav-tabs text-center" id="myTab" role="tablist">
       <li class="w-100 d-flex flex-nowrap align-items-center justify-content-center">
         <i class="material-icons">error</i>
-        <span>{{error}}</span>
+        <span>{{ "No domaines" }}</span>
       </li>
     </ul>
     <!-- end-domaines -->
-    
   
-    <div v-if="domaines && domaines.length && isLoaded" class="tab-content" id="myTabContent">
+    <div v-if="is_domaineLoaded && domaines && domaines.length" class="tab-content" id="myTabContent">
       <!-- theme -->
-      <div :class="(domIndex === 0 && 'tab-pane fade show active') || 'tab-pane fade show hide'" 
-          role="tabpanel" :aria-labelledby="`${domIndex}-tab`"
-          :key="domIndex" v-for="(domaine, domIndex) in domaines" >
+      <div v-for="(domaine, domIndex) in domaines" :class="(domIndex === 0 && 'tab-pane fade show active') || 'tab-pane fade show hide'" 
+          role="tabpanel" :aria-labelledby="`domaine${domIndex}-tab`"
+          :key="`domaine${domIndex}`">
 
-        <div :id="domIndex">
-          <div class="m-cards" id="mCards">
-
-            <!-- card -->
-            <div class="m-card" :key="themeIndex" v-for="(theme, themeIndex) in themes_domaine.slice(begin, end)">
-              <div class="m-card-header">
-                <img class="m-card-img" v-bind:src="theme.url_img" :alt="`theme ${themeIndex}`">
-                <h2 class="m-card-title">{{theme.name}}</h2>
-              </div>
-              <div class="m-card-content">
-                <h2 class="font-lg-8 font-md-s6 font-sm-4 font-s6 text_bold">{{theme.name}}</h2>
-                <p class="m-card-desc text-light ">
-                  {{theme.desc ? theme.desc.substring(0, 200) + ".." : "--"}}
-                </p>
-                                
-                <router-link class="text-light font_sm d-block" :to="{ name: 'allformation', params: {theme_param: theme.id, domaine_param: currentDomaineId} }">
-                  En savoir plus
-                </router-link>
-
-              </div>
-            </div>
-            <!-- end-card -->
-            <div class="show_more_shadow" id="setShadow"></div>
-
-          </div>
-          <!-- end-cards -->
-
-          <div class="row p-2 d-flex justify-content-center">
-            <a class="font_sm font-weight-light" v-on:click="ShowMoreLess(begin, end)" id="showMoreBtn" style="cursor: pointer;">
-             ▽ Afficher plus 
-            </a>
-          </div>
+        <div :id="`domaine${domIndex}`">
+          <!-- THEMES -->
+          <theme 
+            :themes_by_domaine="themes_by_domaine">
+          </theme>
+          <!-- END-THEMES -->
 
         </div>
         <!-- end-theme -->
@@ -177,7 +124,7 @@ export default {
     </div>
     <!-- tab-content -->
     <!-- LOADING .. -->
-    <div v-else-if="domaines && !domaines.length && !isLoaded" class="loading">
+    <div v-else-if="!is_domaineLoaded && domaines && !domaines.length" class="loading">
       <img :src="require('../../assets/img/loading.gif')" class="loading_img_sm" alt="loading pic">
     </div>
     <!-- LOADING .. -->
