@@ -1,9 +1,11 @@
 <script>
-import Contactez from '../../common/Contactez.vue';
-import NavBarForDFormation from '../../common/NavBarForDFormation.vue';
-import FormationSimilaire from './FormationSimilaire.vue';
-import InscriptionModal from './InscriptionModal.vue';
-import SocialShareModal from './SocialShareModal.vue';
+import Contactez from '../../common/Contactez.vue'
+import NavBarForDFormation from '../../common/NavBarForDFormation.vue'
+import FormationSimilaire from './FormationSimilaire.vue'
+import InscriptionModal from './InscriptionModal.vue'
+import SocialShareModal from './SocialShareModal.vue'
+import { store } from '../../store'
+
 export default {
   name: 'DetailFormation',
   components: {
@@ -15,7 +17,6 @@ export default {
   },
   data() {
     return {
-      isLoaded: false,
       isProgramLoaded: false,
       isObjectifLoaded: false,
       form_param: undefined,
@@ -38,62 +39,67 @@ export default {
       formSimStyle: "translate(100%)"
     }
   },
+  // ######### MOUNTED #########
   mounted() {
     this.ResetAll();
+    this.form_param = Math.round(this.$route.params.form_param);
   },
-  created() {
+  // ######### CREATED #########
+  async created() {
+    document.title = "Formation en ...";
     window.scrollTo(0, 0);
-    document.title = "Formation en --";
     window.addEventListener('scroll', this.DisplayCardOnScroll);
-    // récupérer les formations
-    this.form_param = Number.parseInt(this.$route.params.form_param);
-    this.FetchAPI(`/api/mysys/formations/${this.form_param}`, `/api/mysys/formationsbycat/`);
+
+    // ****** DISPATCH ~ ACTIONS ****** //
+    await store.dispatch('FetchThemeData');
+    await store.dispatch('FetchFormationData');
+    await store.dispatch('SetFormationById', this.form_param);
+    await store.dispatch('SetFormationsByTheme', this.formation_by_id.mysystheme_id);
+    
+    
+    // !TRANSFORMER LES PARAGRAPHS EN HTML
+    this.ConvertDataTextToView(this.formation_by_id.programme, 'programme');
+    this.isProgramLoaded = true;
+    this.ConvertDataTextToView(this.formation_by_id.objectif, 'objectif');
+    this.isObjectifLoaded = true;
+    this.RemoveCurrentFormationObject(this.form_param);
+
+    document.title = `${this.formation_by_id.name} • ${this.formation_by_id.description.substring(0, 50)}...`;
   },
+  // ######### COMPUTED ######### 
+  computed: {
+    // *** data from state ***
+    formation_by_id() { return store.state.formation_by_id; },
+    formations_by_theme() { return store.state.formations_by_theme; },
+    // > is data loaded
+    is_themeLoaded() { return store.state.is_themeLoaded; },
+    is_formationsByThemeLoaded() { return store.state.is_formationsByThemeLoaded; }
+  },
+  // ######### WATCH #########
   watch: {
     // déclencher une function si les "params" changent
-    $route: function(to, from) {
+    $route: async function(to, from) {
       if (to !== from) {
         this.ResetAll();
-        this.FetchAPI(`/api/mysys/formations/${this.form_param}`, `/api/mysys/formationsbycat/`);
+        // ****** DISPATCH ~ ACTIONS ****** //
+        await store.dispatch('SetFormationById', this.form_param);
+        await store.dispatch('SetFormationsByTheme', this.formation_by_id.mysystheme_id || 1);
+        
+        this.RemoveCurrentFormationObject(this.form_param);
       } //end if
     }
   },
+  // ######### METHODS #########
   methods: {
-    async FetchAPI(forma_url, theme_url) {
-      await this.axios.get(forma_url)
-        .then(res => this.formation = res.data)
-        .then(() => {
-          // récupérer les formations similaires
-          // this.Getformations_by_cat(this.formation.category)
-          this.axios.get(`${theme_url}${this.formation.mysystheme_id}`)
-            .then((res) => {
-              this.formations_by_cat = res.data.slice(0, 4)
-            })
-        });
-      this.isLoaded = true;
-      document.title = `${this.formation.name} • ${(this.formation.description).substring(0, 50)}..`;
-
-      // TRANSFORMER LES PARAGRAPH EN HTML
-      this.ConvertDataTextToView(this.formation.programme, 'programme');
-      this.isProgramLoaded = true;
-      this.ConvertDataTextToView(this.formation.objectif, 'objectif');
-      this.isObjectifLoaded = true;
-      this.RemoveCurrentFormationObject(this.form_param);
-    },
+    // DATA MANIPULATION
     RemoveCurrentFormationObject(formId) {
       // supprimer la formation actuelle affiché et récupérer le reste
       // let arr = undefined;
-      this.formations_by_cat = this.formations_by_cat.filter((formation) => {
+      this.formations_by_cat = this.formations_by_theme.filter((formation) => {
         return formation.id !== formId;
       });
       console.log("form by cat ", this.formations_by_cat);
     },
-    // async Getformations_by_cat(cat){
-    //   console.log("cat : ", cat);
-    //   await this.axios.get(`/api/mysys/formationsbycat/${cat}`)
-    //     .then(response => this.formations_by_cat = response.data);
-    // },
-
     // **** TRANSFORM CONTENT ****
     TransformContent(textToTransform, symbol, tag, classes, addition) {
       return textToTransform ? textToTransform.split(symbol).map(function(value, index) {
@@ -130,7 +136,7 @@ export default {
       // récup. NOUVEAU paramètre
       this.form_param = parseInt(this.$route.params.form_param);
       // reset variable
-      this.isLoaded = this.isObjectifLoaded = this.isProgramLoaded = false;
+      this.is_formationsByThemeLoaded = this.isObjectifLoaded = this.isProgramLoaded = false;
       // cacher la section 'formationSimilaire'
       let formaSim = document.getElementById('formationSimilaire');
       formaSim.style.opacity = 0;
@@ -204,15 +210,15 @@ export default {
       <div class="row pt-4">
 
         <div class="col-xl-8 col-lg-8 col-md-7 col-12 w-100 pr-lg-5 pr-md-5 pr-0 py-5">
-          <span :class="formation.certif ? 'badge badge-success my-3' : ''">
-            {{ formation.certif ? "• Certificat disponible" : "" }}
+          <span :class="formation_by_id.certif ? 'badge badge-success my-3' : ''">
+            {{ formation_by_id.certif ? "• Certificat disponible" : "" }}
           </span>
-          <span :class="formation.global_event ? 'badge badge-warning my-3' : ''">
-            {{ formation.global_event ? "★ Évenement de la semaine" : "" }}
+          <span :class="formation_by_id.global_event ? 'badge badge-warning my-3' : ''">
+            {{ formation_by_id.global_event ? "★ Évenement de la semaine" : "" }}
           </span>
-          <h1 class="text_bold">{{ formation.name }}</h1>
+          <h1 class="text_bold">{{ formation_by_id.name }}</h1>
           <p class="font-weight-light">
-            {{ formation.description ? formation.description : "--" }}
+            {{ formation_by_id.description || "--" }}
           </p>
           <div class="d-flex flex-wrap align-items-center">
             <i class="h5 mb-0 material-icons">person_pin</i>
@@ -220,7 +226,7 @@ export default {
               Formateur : 
             </span>
             <span class="text-bold">
-              {{ formation.professeur ? formation.professeur : "--" }}
+              {{ formation_by_id.professeur || "--" }}
             </span>
           </div>
           <div class="d-flex flex-wrap align-items-center">
@@ -229,7 +235,7 @@ export default {
               Durée : 
             </span>
             <span class="text-bold">
-              {{ formation.duration ? formation.duration : "Non spécifié" }}
+              {{ formation_by_id.duration || "Non spécifié" }}
             </span>
           </div>
           <div class="d-flex flex-wrap align-items-center">
@@ -238,13 +244,13 @@ export default {
               Dernière mise à jour : 
             </span>
             <span class="text-bold">
-              {{ formation.updated_at ? formation.updated_at : "--" | moment("calendar") }}
+              {{ formation_by_id.updated_at || "--" | moment("calendar") }}
             </span>
           </div>
           <span class="badge badge-primary mt-3">+ 52 participants inscrits</span>
           <div class="w-100 mt-2">
             <button class="btn btn-light font_sm btn-sm ml-0"  data-target="#inscriptionModal44" data-toggle="modal">Partager <i class="fa fa-share"></i></button>
-            <button v-on:click="ScrollUserTo('programme')" class="btn btn-light font_sm btn-sm ml-0">Voir le programme</button>
+            <button @click="ScrollUserTo('programme')" class="btn btn-light font_sm btn-sm ml-0">Voir le programme</button>
           </div>
         </div>
 
@@ -254,22 +260,22 @@ export default {
 
         <!-- col -->
         <div class="col-xl-4 col-lg-4 col-md-5 col-12 ml-auto">
-          <div class="d-card" id="formationCard" v-if="formation && isLoaded">
+          <div class="d-card" id="formationCard" v-if="formation_by_id && is_formationsByThemeLoaded">
             <div class="d-card-header">
-              <img class="d-card-img" :src="formation.url_img" alt="formation__img">
+              <img class="d-card-img" :src="formation_by_id.url_img" alt="formation__img">
             </div>
             <div class="d-card-content">
               <h3 class="text_bold d-inline">
-                {{ formation.prix ? formation.prix + " MAD" : "Contactez-nous" }}
+                {{ formation_by_id.prix ? formation_by_id.prix + " MAD" : "Contactez-nous" }}
               </h3>
               <h6 class="font-weight-light d-inline text-secondary">
-                <del> {{ formation.prix_off ? formation.prix_off + " MAD" : "" }}</del>
+                <del> {{ formation_by_id.prix_off ? formation_by_id.prix_off + " MAD" : "" }}</del>
               </h6>
               <span class="font-weight-light text-secondary d-flex align-items-center">
                 <i class="fa fa-arrow-down mr-1"></i>
                 <small>
-                  {{ formation.prix && formation.prix_off ? 
-                    (((formation.prix * 100) / formation.prix_off)).toFixed(0) + "% de réduction" : "--" }}
+                  {{ formation_by_id.prix && formation_by_id.prix_off ? 
+                    (((formation_by_id.prix * 100) / formation_by_id.prix_off)).toFixed(0) + "% de réduction" : "--" }}
                 </small>
               </span>
               <!-- <div class="d-flex"> -->
@@ -284,7 +290,7 @@ export default {
                   <small class="material-icons h6 mb-0 pr-1">error_outline</small>
                   <small class="text_bold pr-2">Catégorie :</small>
                   <small class="">
-                    {{ formation.category ? formation.category : "--" }} 
+                    {{ formation_by_id.category || "--" }} 
                   </small>
                 </span>
                 <!-- lieu -->
@@ -298,7 +304,7 @@ export default {
                   <small class="material-icons h6 mb-0 pr-1">short_text</small>
                   <small class="text_bold pr-2">Prérequis :</small>
                   <small class="" style="white-space: pre-wrap;">
-                    {{ formation.prerequisite ? formation.prerequisite : "Non" }}
+                    {{ formation_by_id.prerequisite || "Non" }}
                   </small>
                 </span>
 
@@ -373,36 +379,41 @@ export default {
   </div>
   <!-- end-container-fluid -->
   
+  <!-- FORMATION MOBILE BANNER -->
   <div id="formaBanner" class="w-100 d-flex flex-nowrap justify-content-between align-items-center bg_dark px-lg-4 px-2">
 
     <div class="d-flex align-items-center">
       <span class="font-lg-s6 font-md-s6 font-s4 mr-lg-5 mr-2">
-        {{ formation.name ? formation.name : "--" }}
+        {{ formation_by_id.name || "--" }}
       </span>
     </div>
 
     <div class="d-flex align-items-center">
       <span class="font-lg-s6 font-md-s6 font-s4 mx-2 prix">
-        {{ formation.prix ? Math.floor(formation.prix).toFixed(0) + " MAD" : "Contactez-nous" }}
+        {{ formation_by_id.prix ? Math.floor(formation_by_id.prix).toFixed(0) + " MAD" : "Contactez-nous" }}
       </span>
       <button class="btn btn-primary" data-target="#inscriptionModal2" data-toggle="modal">S'inscrire</button>
       <button class="btn btn-secondary d-sm-inline-block d-none">Contactez</button>
     </div>
 
   </div>
+  <!-- END FORMATION MOBILE BANNER -->
   
+  <!-- Formations by Category -->
   <formation-similaire
-    :isLoaded="isLoaded"
-    :category="formation.category"
+    v-if="formations_by_cat"
+    :isLoaded="is_formationsByThemeLoaded"
+    :category="formation_by_id.category"
     :formations="formations_by_cat">
   </formation-similaire>
 
   <contactez></contactez>
 
-  <inscription-modal v-if="isLoaded" :formation="formation">
+  <inscription-modal v-if="is_formationsByThemeLoaded" :formation="formation_by_id">
   </inscription-modal>
 
-  <social-share-modal v-if="isLoaded" :formation="formation"></social-share-modal>
+  <social-share-modal v-if="is_formationsByThemeLoaded" :formation="formation_by_id">
+  </social-share-modal>
 
 </div>
 <!-- END-DETAIL-FORMATION -->

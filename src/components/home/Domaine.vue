@@ -18,7 +18,7 @@ export default {
     is_themeLoaded() { return store.state.is_themeLoaded; },
     is_formationLoaded() { return store.state.is_formationLoaded; },
     is_themeByDomaineLoaded() { return store.state.is_themeByDomaineLoaded; },
-    is_formationByThemeLoaded() { return store.state.is_formationByThemeLoaded; }
+    is_formationsByThemeLoaded() { return store.state.is_formationsByThemeLoaded; }
   }, // computed
   methods: {
     ...mapActions([

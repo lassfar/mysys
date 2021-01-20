@@ -10,6 +10,7 @@ export const store = new Vuex.Store({
   // #################### S T A T E #################### //
   // ################################################### //
   state: {
+    doc_title: undefined,
     domaines: [],
     themes: [],
     formations: [],
@@ -22,6 +23,8 @@ export const store = new Vuex.Store({
     is_domaineLoaded: false,
     is_themeLoaded: false,
     is_formationLoaded: false,
+    is_themesByDomaineLoaded: false,
+    is_formationsByThemeLoaded: false,
     // errors
     has_domaineError: false,
     has_themeError: false,
@@ -54,7 +57,7 @@ export const store = new Vuex.Store({
       console.log("domaineId", domaineId)
       // vérifier si les domaines/thèmes sont chargés
       if ((state.is_domaineLoaded && state.is_themeLoaded) && state.themes) {
-        state.is_themeByDomaineLoaded = true; // isLoaded */
+        state.is_themesByDomaineLoaded = true; // isLoaded */
         state.themes_by_domaine = state.themes.filter((theme) => {
           return theme.mysysdomain_id === domaineId;
         });
@@ -62,9 +65,9 @@ export const store = new Vuex.Store({
       }
     },
     SET_FORMATIONS_BY_THEME(state, themeId = state.themes[0].id) {
-      console.log("themeId", themeId)
+      console.log("themeId in SET_FORMATIONS_BY_THEME", themeId)
       if ((state.is_formationLoaded && state.is_themeLoaded) && state.formations) {
-        state.is_formationByThemeLoaded = true; // isLoaded */
+        state.is_formationsByThemeLoaded = true; // isLoaded */
         state.formations_by_theme = state.formations.filter((forma) => {
           return forma.mysystheme_id === themeId;
         });
@@ -82,7 +85,7 @@ export const store = new Vuex.Store({
     SET_FORMATION_BY_ID(state, formaId) {
       state.formation_by_id = state.formations.find(forma => forma.id === formaId);
       console.info("state.formation_by_id", state.formation_by_id);
-    }
+    },
   }, // mutations
   // ####################################################### //
   // #################### A C T I O N S #################### //
@@ -101,7 +104,7 @@ export const store = new Vuex.Store({
       await axios.get('/api/mysys/themes')
         .then((res) => {
           commit('SET_THEMES', res.data);
-          console.log( "SET_THEMES :", res.data)
+          console.log("SET_THEMES :", res.data)
         })
         .catch((err) => console.error("err themes", err));
     },
@@ -132,7 +135,10 @@ export const store = new Vuex.Store({
     },
   },
   methods: {
-    
+    // 
+    UpdateDocTitle(title) {
+      document.title = title;
+    }
   }
   
 

@@ -30,12 +30,13 @@ export default {
     document.title = "MySYS • Formations";
     window.scrollTo(0, 0);
     
-    // ###### DISPATCH ~ ACTIONS ###### //
+    // ****** DISPATCH ~ ACTIONS ****** //
     // get Data
     await store.dispatch('FetchDomaineData');
     await store.dispatch('FetchThemeData');
     await store.dispatch('FetchFormationData');
     // get domaine_by_id and themes_by_domaine
+    // check if there are params
     if (this.domaine_param) {
       await store.dispatch('SetDomaineById', this.domaine_param);
       await store.dispatch('SetThemesByDomaine', this.domaine_param);

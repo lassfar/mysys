@@ -3,6 +3,52 @@ export default {
   name: 'SocialShareModal',
   props: {
     formation: {type: Object, required: true}
+  },
+  data() {
+    return {
+      social_share: [
+        {
+          name: 'facebook',
+          network: 'facebook',
+          class: 'btn btn-primary',
+          class_icon: 'fa fa-facebook-f',
+          style: '',
+          url: 'https://google.com'
+        },
+        {
+          name: 'twitter',
+          network: 'twitter',
+          class: 'btn text-light',
+          class_icon: 'fa fa-twitter',
+          style: 'background-color:#28adff;',
+          url: 'https://google.com'
+        },
+        {
+          name: 'linkedin',
+          network: 'linkedin',
+          class: 'btn text-light',
+          class_icon: 'fa fa-linkedin',
+          style: 'background-color:#0270ad;',
+          url: 'https://google.com'
+        },
+        {
+          name: 'whatsapp',
+          network: 'whatsapp',
+          class: 'btn btn-success',
+          class_icon: 'fa fa-whatsapp',
+          style: '',
+          url: 'https://google.com'
+        },
+        {
+          name: 'email',
+          network: 'email',
+          class: 'btn btn-danger',
+          class_icon: 'fa fa-envelope-open',
+          style: '',
+          url: 'https://google.com'
+        },
+      ]
+    }
   }
 }
 </script>
@@ -11,7 +57,7 @@ export default {
   <div id="socialShareModal">
     
     <!-- MODALS -->
-    <div class="modal fade bd-example-modal-lg" id="inscriptionModal44" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div v-if="formation" class="modal fade bd-example-modal-lg" id="inscriptionModal44" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -25,55 +71,18 @@ export default {
         <div class="modal-body p-3">
           <div class="container-fluid p-3">
             <div class="d-flex justify-content-center">
-              <ShareNetwork
-                  class="btn btn-primary"
-                  network="facebook"
-                  url="google.com"
-                  :title="formation.name"
-                  :description="formation.description"
-                  :hashtags="formation.category"
+              <ShareNetwork v-for="(social, idx) in social_share" :key="`social_${idx}`"
+                  :class="social.class"
+                  :style="social.style"
+                  :network="social.network"
+                  :url="social.url"
+                  :title="social.name"
+                  :description="social.description"
+                  :hashtags="social.category"
                 >
-                <i class="fa fa-facebook-f"></i> Facebook
+                <i :class="social.class_icon"></i> 
+                {{social.name}}
               </ShareNetwork>
-              <ShareNetwork
-                style="background-color:#28adff;"
-                class="btn text-light"
-                network="twitter"
-                url="google.com"
-                :title="formation.name"
-                :hashtags="formation.category"
-                >
-                <i class="fa fa-twitter"></i> Twitter
-              </ShareNetwork>
-              <ShareNetwork
-                class="btn text-light"
-                style="background-color:#0270ad;"
-                network="linkedin"
-                url="google.com"
-                :title="formation.name"
-                >
-                <i class="fa fa-linkedin"></i> LinkedIn
-                </ShareNetwork>
-                <ShareNetwork
-                  class="btn btn-success"
-                  network="whatsapp"
-                  url="google.com"
-                  :title="formation.name"
-                  :description="formation.description"
-                  :hashtags="formation.category"
-                  >
-                  <i class="fa fa-whatsapp"></i> WhatsApp
-                </ShareNetwork>
-                <ShareNetwork
-                  class="btn btn-danger"
-                  network="email"
-                  url="google.com"
-                  :title="formation.name"
-                  :description="formation.description"
-                  :hashtags="formation.category"
-                  >
-                  <i class="fa fa-envelope-open"></i> Email
-                </ShareNetwork>
               </div>
           </div>
           <div class="modal-footer ">

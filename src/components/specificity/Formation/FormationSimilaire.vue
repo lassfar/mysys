@@ -43,7 +43,7 @@ export default {
       </h1>
       <!-- card-formation -->
       <formation-card 
-        :formations="formations">
+        :formations="formations.slice(0, 4)">
       </formation-card>
       <!-- card-formation -->
     </div>
