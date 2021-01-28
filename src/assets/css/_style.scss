@@ -87,6 +87,9 @@ input[type=text]:focus, input[type=url]:focus, input[type=email]:focus, input[ty
 //   transition: .3s all ease-in-out;
 //   border: none !important;
 // }
+.home {
+  overflow-x: none;
+}
 .btn-primary {
   background-color: $mysyscolor1 !important;
   color: $light !important;

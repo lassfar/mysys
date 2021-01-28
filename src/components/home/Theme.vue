@@ -49,7 +49,9 @@ export default {
             {{theme.desc ? theme.desc.substring(0, 200) + ".." : "--"}}
           </p>
                           
-          <router-link class="d-block text-light font_sm" :to="{ name: 'allformation', params: {theme_param: theme.id, domaine_param: theme.mysysdomain_id} }">
+          <router-link 
+            class="d-block text-light font_sm" 
+            :to="{ name: 'allformation', params: {theme_param: theme.id, domaine_param: theme.mysysdomain_id} }">
             En savoir plus
           </router-link>
 

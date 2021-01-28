@@ -54,6 +54,9 @@ export default {
     }
   },
   computed: {
+    // assigner les id initiales à partir d'URL ou des données array
+    // currDomaineId() { return this.domaine_param || null; },
+    // currThemeId() { return this.theme_param || null; },
     // *** data from state ***
     domaines() { return store.state.domaines; },
     themes_by_domaine() { return store.state.themes_by_domaine; },
@@ -65,10 +68,23 @@ export default {
     is_domaineLoaded() { return store.state.is_domaineLoaded; },
     is_themeLoaded() { return store.state.is_themeLoaded; },
     is_formationLoaded() { return store.state.is_formationLoaded; },
-    // > errors
+    // > has errors
     has_domaineError() { return store.state.has_domaineError },
     has_themeError() { return store.state.has_themeError },
     has_formationError() { return store.state.has_formationError },
+    // > errors
+    domaineError() { return store.state.domaineError },
+    themeError() { return store.state.themeError },
+    formationError() { return store.state.formationError },
+  },
+  watch: {
+    // currDomaineId: async function(from, to) {
+    //   if (from != to) {
+    //     this.currDomaineId = this.domaines[0].id;
+    //     await store.dispatch('SetThemesByDomaine', this.domaines[0].id);
+    //     this.currThemeId = this.themes_by_domaine[0].id;
+    //   }
+    // },
   },
   methods: {
     async handleAction(action, targetId = null) {
@@ -105,8 +121,8 @@ export default {
   
   <div class="container-fluid pb-5">
 
-    <!-- themes -->
-    <ul v-if="is_themeLoaded && themes_by_domaine && themes_by_domaine.length > 0" class="onglet w-100 nav nav-tabs align-items-center" id="myTab" role="tablist">
+    <!-- ************ THEMES ************ -->
+    <ul v-if="themes_by_domaine && themes_by_domaine.length > 0 && is_themeLoaded" class="onglet w-100 nav nav-tabs align-items-center" id="myTab" role="tablist">
       <!-- button-right -->
       <button class="icon-btn bg-light" id="btnFixedLeft" @click="ScrollLeft(-10)">
         <i class="material-icons">chevron_left</i>
@@ -116,11 +132,11 @@ export default {
       <li class="w-auto" v-for="(thm, thmIdx) in themes_by_domaine" :key="thmIdx"
         @click="handleAction('SetFormationsByTheme', thm.id)">
 
-        <router-link :class="(currThemeId === thm.id && 'nav-link active') || 'nav-link'"
+        <router-link :class="(currThemeId == thm.id && 'nav-link active') || 'nav-link'"
           :id="`theme${thm.id}-tab`" :to="`#theme${thm.id}`" data-toggle="tab" role="tab" :aria-controls="`theme${thm.id}`" aria-selected="true">
           <div class="text-center">
             <span class="text-nowrap">
-              {{ thm.name ? thm.name : "--" }}
+              {{ thm.name || "--" }}
             </span>
           </div>
         </router-link>
@@ -132,30 +148,31 @@ export default {
       </button>
       <!-- end-btn-left -->
     </ul>
-    <!-- else -->
+    <!-- >>>> else-if -->
     <ul v-else-if="is_themeLoaded && themes_by_domaine && themes_by_domaine.length === 0" class="onglet w-100 nav nav-tabs align-items-center text-center" id="myTab" role="tablist">
       <li class="col-12">
         <h4>Aucun thème pour l'instant.</h4>
       </li>
     </ul>
-    <!-- else -->
+    <!-- >>>> else -->
     <ul v-else-if="!is_themeLoaded" class="onglet w-100 nav nav-tabs align-items-center text-center" id="myTab" role="tablist">
       <li class="col-12 loading p-0">
         <img src="../../../assets/img/loading2.gif" class="loading_img_sm" alt="loading pic">
       </li>
     </ul>
-    <!-- else -->
+    <!-- >>>> else -->
     <ul v-else-if="has_themeError" class="onglet w-100 nav nav-tabs text-center" id="myTab" role="tablist">
       <li class="w-100 d-flex flex-nowrap align-items-center justify-content-center">
         <i class="material-icons">error</i>
         <span>{{theme_error}}</span>
       </li>
     </ul>
-    <!-- end-themes -->
+    <!-- ************ END THEMES ************ -->
 
 
     <!-- ################################################################# -->
 
+    <!-- ************ FORMATIONS ************ -->
     <div v-if="is_formationLoaded && formations_by_theme && formations_by_theme.length" class="tab-content" id="myTabContent">
 
       <div class="tab-pane fade show active" id="dev" role="tabpanel" aria-labelledby="dev-tab">
@@ -190,6 +207,7 @@ export default {
       </li>
     </div>
     <!-- ERROR .. -->
+    <!-- ************ END FORMATIONS ************ -->
 
 
   </div>

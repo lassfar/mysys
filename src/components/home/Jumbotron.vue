@@ -56,7 +56,7 @@ export default {
 
 		<div class="row text-light">
 
-			<div class="card col-lg-4 col-sm-12 bg-primary text_bold p-2 border-outline-0"
+			<div class="card col-lg-4 col-sm-12 bg-primary text_bold p-2 border-outline-0 rounded-0"
 					v-for="(jcard, jumboIndex) in jumbotronCards" :key="`jumbo${jumboIndex}`" >
 				<div class="card-body font-weight-light">
 					<h3 class="text_bold">

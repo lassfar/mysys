@@ -42,7 +42,7 @@ export default {
 
 
 <template>
-<div id="home">
+<div id="home" class="home">
   <div class="bg_jumbo">
     <nav-bar-for-home></nav-bar-for-home>
     <jumbotron></jumbotron>

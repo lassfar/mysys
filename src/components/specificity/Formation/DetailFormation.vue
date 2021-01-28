@@ -84,6 +84,12 @@ export default {
         // ****** DISPATCH ~ ACTIONS ****** //
         await store.dispatch('SetFormationById', this.form_param);
         await store.dispatch('SetFormationsByTheme', this.formation_by_id.mysystheme_id || 1);
+    
+        // !TRANSFORMER LES PARAGRAPHS EN HTML
+        this.ConvertDataTextToView(this.formation_by_id.programme, 'programme');
+        this.isProgramLoaded = true;
+        this.ConvertDataTextToView(this.formation_by_id.objectif, 'objectif');
+        this.isObjectifLoaded = true;
         
         this.RemoveCurrentFormationObject(this.form_param);
       } //end if
@@ -188,6 +194,9 @@ export default {
         if (verticalPos > divHeight) {
           formaBanner.style.display =  "none";
         }
+        // *** show formSimilaire on scroll ***
+        formaSim.setAttribute("style", "opacity: 1");
+        this.isFormSimShowed = true;
       } // screen width
     },
 

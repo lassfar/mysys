@@ -24,12 +24,12 @@ export default {
     <div class="row">
       <div class="card col-lg-6 col-sm-12 bg_gradient p-3 border-0 radius_0">
         <div class="card-body d-flex flex-column justify-content-center">
-          <h1 class="card-title text-capitalize text_bold ">Ils nous font confiance</h1>
+          <h1 class="font-s12 font-md-s10 font-sm-s8 text-capitalize text_bold ">Ils nous font confiance</h1>
           <p class="card-text">
-            Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée 
+            <!-- Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée 
             à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès
             qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin, le Lorem 
-            ipsum ou Lipsum.
+            ipsum ou Lipsum. -->
           </p>
         </div>
       </div>
