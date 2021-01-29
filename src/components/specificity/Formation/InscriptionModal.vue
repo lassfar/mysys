@@ -2,7 +2,7 @@
 export default {
   name: 'InscriptionModal',
   props: {
-    formation: { type: Object, required: true }
+    formation: { type: [Object, Array], required: true }
   },
   data() {
     return {

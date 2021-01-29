@@ -14,7 +14,7 @@
           <router-link class="nav-link" to="/home"><i class="fa fa-home"></i></router-link>
         </li>
         <li class="nav-item active mr-5" data-toggle="collapse" data-target=".navbar-collapse.show">
-          <router-link class="nav-link" to="/all-formation"><i class="fa fa-chevron-left"></i> Retourner vers formations</router-link>
+          <router-link class="nav-link" to="/all-formation"><i class="fa fa-chevron-left"></i> Formations</router-link>
         </li>
       </ul>
       <ul class="nav navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap mr-3">

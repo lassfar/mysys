@@ -6,8 +6,9 @@
 }
 .onglet {
   display: flex;
-  justify-content: initial;
   flex-flow: row nowrap;
+  justify-content: initial;
+  align-items: center;
   overflow-x: auto;
 }
 .onglet .nav-link {

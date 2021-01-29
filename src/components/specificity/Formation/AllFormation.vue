@@ -14,17 +14,14 @@ export default {
   },
   data () {
     return {
-      currDomaineId: null,
-      currThemeId: null,
       domaine_param: undefined,
       theme_param: undefined,
+      selectedDomaineId: undefined
     }
   },
   mounted() {
     this.domaine_param = this.$route.params.domaine_param ? Math.round(this.$route.params.domaine_param) : undefined;
     this.theme_param = this.$route.params.theme_param ? Math.round(this.$route.params.theme_param) : undefined;
-    this.currDomaineId = this.domaine_param;
-    this.currThemeId = this.theme_param;
   },
   async created() {
     document.title = "MySYS • Formations";
@@ -35,6 +32,11 @@ export default {
     await store.dispatch('FetchDomaineData');
     await store.dispatch('FetchThemeData');
     await store.dispatch('FetchFormationData');
+
+    // SET CURRENT ID's
+    await store.dispatch('SetCurrDomaineId', this.domaine_param);
+    await store.dispatch('SetCurrThemeId', this.theme_param);
+
     // get domaine_by_id and themes_by_domaine
     // check if there are params
     if (this.domaine_param) {
@@ -68,6 +70,10 @@ export default {
     is_domaineLoaded() { return store.state.is_domaineLoaded; },
     is_themeLoaded() { return store.state.is_themeLoaded; },
     is_formationLoaded() { return store.state.is_formationLoaded; },
+    // > data IDs
+    currDomaineId() { return store.state.currDomaineId; },
+    currThemeId() { return store.state.currThemeId; },
+    currFormaId() { return store.state.currFormaId; },
     // > has errors
     has_domaineError() { return store.state.has_domaineError },
     has_themeError() { return store.state.has_themeError },
@@ -78,17 +84,29 @@ export default {
     formationError() { return store.state.formationError },
   },
   watch: {
-    // currDomaineId: async function(from, to) {
-    //   if (from != to) {
-    //     this.currDomaineId = this.domaines[0].id;
-    //     await store.dispatch('SetThemesByDomaine', this.domaines[0].id);
-    //     this.currThemeId = this.themes_by_domaine[0].id;
-    //   }
-    // },
   },
   methods: {
     async handleAction(action, targetId = null) {
       await store.dispatch(action, targetId);
+    },
+    async LoadThemesWithFormations(domaineId) {
+      // changer le id domaine actuel
+      await store.dispatch('SetCurrDomaineId', domaineId);
+      console.log("currDomaineId", domaineId)
+      // récupérer les thèmes avec id domaine actuel
+      await store.dispatch('SetThemesByDomaine', domaineId);
+      // récupérer les formations du premier id theme (par defaut dans store)
+      await store.dispatch('SetFormationsByTheme');
+    },
+    // scroll
+    ScrollLeft(valToScroll) { 
+      let myTab = document.getElementById('myTab');
+      let amount = 0;
+      let scrollInterv = setInterval(function () {
+        myTab.scrollLeft += valToScroll;
+        amount += valToScroll;
+        amount === 200 | amount === -200 && clearInterval(scrollInterv);
+      }, 10);
     },
   } // METHODS
 }
@@ -99,19 +117,24 @@ export default {
 </style>
 
 <template>
+
 <div id="allFormation">
+
   <NavBar />
+
   <div class="container-fluid pb-2">
     <div class="main-title">
       <span class="title">Nos Formations</span>
       <select class="subselect" v-if="is_domaineLoaded && domaines" 
-        @click="handleAction('SetThemesByDomaine', currDomaineId)" v-model="currDomaineId" >
+        @change="LoadThemesWithFormations(selectedDomaineId)"
+        v-model="selectedDomaineId">
         <option v-for="(dom, domIndex) in domaines" :value="dom.id" 
-          :selected="(currDomaineId === dom.id)" :key="domIndex" >
+          :selected="(currDomaineId == dom.id)" :key="domIndex" >
           {{ dom.name }}
         </option>
       </select>
-      <select class="subselect" v-else>
+
+      <select v-else class="subselect">
         <option class="subelement">
           {{ "..." }}
         </option>
@@ -122,7 +145,7 @@ export default {
   <div class="container-fluid pb-5">
 
     <!-- ************ THEMES ************ -->
-    <ul v-if="themes_by_domaine && themes_by_domaine.length > 0 && is_themeLoaded" class="onglet w-100 nav nav-tabs align-items-center" id="myTab" role="tablist">
+    <ul v-if="themes_by_domaine && themes_by_domaine.length > 0 && is_themeLoaded" class="onglet w-100 nav nav-tabs" id="myTab" role="tablist">
       <!-- button-right -->
       <button class="icon-btn bg-light" id="btnFixedLeft" @click="ScrollLeft(-10)">
         <i class="material-icons">chevron_left</i>

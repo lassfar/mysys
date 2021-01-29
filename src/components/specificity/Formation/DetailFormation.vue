@@ -142,7 +142,7 @@ export default {
       // récup. NOUVEAU paramètre
       this.form_param = parseInt(this.$route.params.form_param);
       // reset variable
-      this.is_formationsByThemeLoaded = this.isObjectifLoaded = this.isProgramLoaded = false;
+      this.isObjectifLoaded = this.isProgramLoaded = false;
       // cacher la section 'formationSimilaire'
       let formaSim = document.getElementById('formationSimilaire');
       formaSim.style.opacity = 0;
