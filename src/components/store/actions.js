@@ -11,10 +11,10 @@ export const actions = {
     await axios.get('/api/mysys/domaines')
       .then((res) => {
         commit('SET_DOMAINES', res.data);
-        console.log( "SET_DOMAINES :", res.data)
+        //console.log( "SET_DOMAINES :", res.data)
       })
       .catch((err) => {
-        console.error("err domaines", err);
+        //console.error("err domaines", err);
         commit('SET_DOMAINE_ERROR', err);
       });
   },
@@ -22,10 +22,10 @@ export const actions = {
     await axios.get('/api/mysys/themes')
       .then((res) => {
         commit('SET_THEMES', res.data);
-        console.log("SET_THEMES :", res.data)
+        //console.log("SET_THEMES :", res.data)
       })
       .catch((err) => {
-        console.error("err themes", err);
+        //console.error("err themes", err);
         commit('SET_THEME_ERROR', err);
       });
   },
@@ -33,10 +33,10 @@ export const actions = {
     await axios.get('/api/mysys/formations')
       .then((res) => {
         commit('SET_FORMATIONS', res.data);
-        console.log("SET_FORMATIONS :", res.data)
+        //console.log("SET_FORMATIONS :", res.data)
       })
       .catch((err) => {
-        console.error("err formations", err);
+        //console.error("err formations", err);
         commit('SET_FORMATION_ERROR', err);
       });
   },

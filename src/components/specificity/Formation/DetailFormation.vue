@@ -5,6 +5,7 @@ import FormationSimilaire from './FormationSimilaire.vue'
 import InscriptionModal from './InscriptionModal.vue'
 import SocialShareModal from './SocialShareModal.vue'
 import { store } from '../../store'
+import AppImage from '../../ui/AppImage.vue'
 
 export default {
   name: 'DetailFormation',
@@ -13,7 +14,8 @@ export default {
     Contactez,
     FormationSimilaire,
     InscriptionModal,
-    SocialShareModal
+    SocialShareModal,
+    AppImage
   },
   data() {
     return {
@@ -40,12 +42,16 @@ export default {
     }
   },
   // ######### MOUNTED #########
-  mounted() {
+  created() {
     this.ResetAll();
     this.form_param = Math.round(this.$route.params.form_param);
   },
+  beforeDestroy() {
+    // destroy event listener to prevent errors in the console
+    window.removeEventListener('scroll', this.DisplayCardOnScroll, {passive: true});
+  },
   // ######### CREATED #########
-  async created() {
+  async mounted() {
     document.title = "Formation en ...";
     window.scrollTo(0, 0);
     window.addEventListener('scroll', this.DisplayCardOnScroll);
@@ -104,7 +110,7 @@ export default {
       this.formations_by_cat = this.formations_by_theme.filter((formation) => {
         return formation.id !== formId;
       });
-      console.log("form by cat ", this.formations_by_cat);
+      //console.log("form by cat ", this.formations_by_cat);
     },
     // **** TRANSFORM CONTENT ****
     TransformContent(textToTransform, symbol, tag, classes, addition) {
@@ -122,7 +128,7 @@ export default {
       newDom.innerHTML = textToConvert ? textToConvert : "(vide)";
       domGoal.innerHTML = ""; // clean old paragraph
       domGoal.append(newDom); // append new paragraph
-      // console.log(domGoal.textContent);
+      // //console.log(domGoal.textContent);
     },
     ConvertDataTextToView(originText, domId) {
       let myText = originText;
@@ -130,7 +136,7 @@ export default {
       this.dataTransform.map((trans) => {
         let converted = this.TransformContent(myText, trans.symbol, trans.tag, trans.classes, trans.addition);
         myText = converted;
-        // console.log("domId", domId);
+        // //console.log("domId", domId);
       });
       // convert transformed text to HTML
       this.ConvertStringToHtml(myText, domId);
@@ -164,7 +170,7 @@ export default {
 
       let verticalPos = window.scrollY; // récupérer la position de scroll en px
       let divHeight = detailFormaHeight - formaSim.offsetHeight - contactezHeight - FooterHeight; // récupérer la taille vertical de 'div'
-      // console.log('vert pos : ' + verticalPos + ' div height : ' + divHeight);
+      // //console.log('vert pos : ' + verticalPos + ' div height : ' + divHeight);
 
       if (screen.width >= 1024) { // fixer 'card' avec les grandes écrans
         formaBanner.setAttribute('style', 'display: none !important');
@@ -271,7 +277,11 @@ export default {
         <div class="col-xl-4 col-lg-4 col-md-5 col-12 ml-auto">
           <div class="d-card" id="formationCard" v-if="formation_by_id && is_formationsByThemeLoaded">
             <div class="d-card-header">
-              <img class="d-card-img" :src="formation_by_id.url_img" alt="formation__img">
+              <app-image class="d-card-img"
+                background-color="#e0e7f2"
+                lazy-src="../../../assets/img/default-img.png"
+                :lazy-srcset="formation_by_id.url_img"
+                :alt="`formation ${formation_by_id.name}`" />
             </div>
             <div class="d-card-content">
               <h3 class="text_bold d-inline">

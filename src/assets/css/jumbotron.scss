@@ -1,13 +1,10 @@
 @import './variables';
 
 .bg_jumbo {
-  background-image:linear-gradient(rgba(0, 0, 0, 0.186), rgba(0, 0, 0, 0.775)), url("https://images.unsplash.com/photo-1547658718-1cdaa0852790?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80");
-  background-repeat: no-repeat;
-  background-color: #cccccc;
-  background-size: cover;
-} 
-.bg_jumbo_2 {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.576), rgba(0, 0, 0, 0.302)), url("https://images.unsplash.com/photo-1578070181910-f1e514afdd08?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1404&q=80");
+  background: {
+    color: linear-gradient(rgba(0, 0, 0, 0.186), rgba(0, 0, 0, 0.775));
+    image: url("~@/assets/bg/jumbo-bg.jpg");
+  }
   background-repeat: no-repeat;
   background-color: #cccccc;
   background-size: cover;

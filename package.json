@@ -12,6 +12,7 @@
     "core-js": "^3.6.5",
     "countdown-vue": "^1.1.5",
     "jquery": "^3.5.1",
+    "lozad": "^1.16.0",
     "moment": "^2.29.1",
     "vue": "^2.6.11",
     "vue-moment": "^4.1.0",

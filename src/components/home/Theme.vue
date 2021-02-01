@@ -1,5 +1,7 @@
 <script>
+import AppImage from '../ui/AppImage.vue';
 export default {
+  components: { AppImage },
   name: 'Theme',
   data () {
     return {
@@ -40,7 +42,11 @@ export default {
       <!-- card -->
       <div class="m-card" :key="themeIdx" v-for="(theme, themeIdx) in themes_by_domaine.slice(begin, end)">
         <div class="m-card-header">
-          <img class="m-card-img" v-bind:src="theme.url_img" :alt="`theme ${themeIdx}`">
+          <app-image class="m-card-img"
+            background-color="#e0e7f2"
+            lazy-src="../../assets/img/default-img.png"
+            :lazy-srcset="theme.url_img" :alt="`theme ${themeIdx}`" />
+
           <h2 class="m-card-title">{{theme.name}}</h2>
         </div>
         <div class="m-card-content">

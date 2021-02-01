@@ -36,7 +36,7 @@ export default {
       this.themes_by_domaine = this.themes.filter((themes) => {
         return domaineId && themes.mysysdomain_id === domaineId;
       });
-      console.log("Find themes_by_domaine : ", this.themes_by_domaine);
+      //console.log("Find themes_by_domaine : ", this.themes_by_domaine);
     },
     FindFormationByTheme(themeId) {
       this.formations_by_theme = this.formations.filter((formation) => {

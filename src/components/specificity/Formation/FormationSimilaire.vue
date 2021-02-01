@@ -24,7 +24,7 @@ export default {
     // $route: function(to, from) {
     //   if (to !== from) {
     //     this.form_param = this.$route.params.form_param;
-    //     console.log("form param sim watch :", this.form_param);
+    //     //console.log("form param sim watch :", this.form_param);
     //     this.RemoveCurrentFormationObject(this.form_param)
     //   }
     // },

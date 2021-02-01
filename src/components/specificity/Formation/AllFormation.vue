@@ -92,7 +92,7 @@ export default {
     async LoadThemesWithFormations(domaineId) {
       // changer le id domaine actuel
       await store.dispatch('SetCurrDomaineId', domaineId);
-      console.log("currDomaineId", domaineId)
+      //console.log("currDomaineId", domaineId)
       // récupérer les thèmes avec id domaine actuel
       await store.dispatch('SetThemesByDomaine', domaineId);
       // récupérer les formations du premier id theme (par defaut dans store)

@@ -15,9 +15,9 @@ export default {
     // ###### DISPATCH ~ ACTIONS ###### //
     await store.dispatch('FetchDomaineData');
     await store.dispatch('FetchThemeData');
-    await store.dispatch('FetchFormationData');
     await store.dispatch('SetThemesByDomaine');
-    await store.dispatch('SetFormationsByTheme');
+    // await store.dispatch('FetchFormationData');
+    // await store.dispatch('SetFormationsByTheme');
   },
   computed: {
     domaines() { return store.domaines; },

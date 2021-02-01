@@ -14,29 +14,22 @@ export default {
     //  main data
     domaines() { return store.state.domaines; },
     themes_by_domaine() { return store.state.themes_by_domaine; },
-    formations_by_theme() { return store.state.formations_by_theme; },
     //  is loaded
     is_domaineLoaded() { return store.state.is_domaineLoaded; },
     is_themeLoaded() { return store.state.is_themeLoaded; },
-    is_formationLoaded() { return store.state.is_formationLoaded; },
     is_themesByDomaineLoaded() { return store.state.is_themesByDomaineLoaded; },
-    is_formationsByThemeLoaded() { return store.state.is_formationsByThemeLoaded; },
     // is errors
     domaineError() { return store.state.domaineError },
     themeError() { return store.state.themeError },
-    formationError() { return store.state.formationError },
     // has errors
     has_domaineError() { return store.state.has_domaineError },
     has_themeError() { return store.state.has_themeError },
-    has_formationError() { return store.state.has_formationError }
   }, // computed
   methods: {
     ...mapActions([
       'FetchDomaineData',
       'FetchThemeData',
-      'FetchFormationData',
-      'SetThemesByDomaine',
-      'SetFormationsByTheme'
+      'SetThemesByDomaine'
     ]),
     handleAction(action, targetId = null) {
       store.dispatch(action, targetId);
