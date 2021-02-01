@@ -1,5 +1,7 @@
 <script>
+import AppImage from '../ui/AppImage.vue'
 export default {
+  components: { AppImage },
   name: 'Client',
   data() {
     return {
@@ -22,7 +24,7 @@ export default {
   <div class="container-fluid border-bottom">
 
     <div class="row">
-      <div class="card col-lg-6 col-sm-12 bg_gradient p-3 border-0 radius_0">
+      <div class="p-card col-lg-6 col-sm-12 bg_gradient p-3 border-0 radius_0">
         <div class="card-body d-flex flex-column justify-content-center">
           <h1 class="font-s12 font-md-s10 font-sm-s8 text-capitalize text_bold ">Ils nous font confiance</h1>
           <p class="card-text">
@@ -34,12 +36,15 @@ export default {
         </div>
       </div>
 
-      <div class="card bg-white col-lg-6 col-sm-12 p-3 border-0 radius_0">
+      <div class="p-card bg-white col-lg-6 col-sm-12 p-3 border-0 radius_0">
         <div class="card-body">
           <div class="row">
 
-            <div v-for="(part, partIndex) in clients" :key="partIndex" class="col-lg-4 col-md-4 col-sm-6 col-6">
-              <img :src="(part.imgURL)" :alt="part.alt" class="p-card-img">
+            <div v-for="(cl, clIdx) in clients" :key="clIdx" class="col-lg-4 col-md-4 col-sm-6 col-6">
+              <app-image class="p-card-img"
+                background-color="transparent"
+                lazy-src="../../assets/img/default-img.png"
+                :lazy-srcset="(cl.imgURL)" :alt="cl.alt"  />
             </div>
 
           </div>

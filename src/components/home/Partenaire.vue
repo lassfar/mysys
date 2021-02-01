@@ -1,5 +1,7 @@
 <script>
+import AppImage from '../ui/AppImage.vue'
 export default {
+  components: { AppImage },
   name: 'Partenaire',
   data() {
     return {
@@ -27,7 +29,7 @@ export default {
  <div class="container-fluid mb-4 border-bottom">
 
   <div class="row">
-   <div class="card col-lg-6 col-sm-12 bg_gradient p-3 border-0 radius_0">
+   <div class="p-card col-lg-6 col-sm-12 bg_gradient p-3 border-0 radius_0">
     <div class="card-body d-flex flex-column justify-content-center">
       <h1 class="font-s12 font-md-s10 font-sm-s8 text_bold">Nos Partenaires</h1>
       <p class="card-text">
@@ -39,12 +41,15 @@ export default {
     </div>
    </div>
 
-  <div class="card bg-white col-lg-6 col-sm-12 p-3 border-0 radius_0">
+  <div class="p-card bg-white col-lg-6 col-sm-12 p-3 border-0 radius_0">
     <div class="card-body">
       <div class="row">
 
         <div v-for="(part, partIndex) in partenaires" :key="partIndex" class="col-lg-4 col-md-4 col-sm-6 col-6">
-          <img :src="(part.imgURL)" :alt="part.alt" class="p-card-img">
+          <app-image class="p-card-img" :alt="part.alt"
+            background-color="transparent"
+            lazy-src="../../assets/img/default-img.png"
+            :lazy-srcset="(part.imgURL)" />
         </div>
 
       </div>

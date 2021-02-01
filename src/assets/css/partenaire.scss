@@ -3,11 +3,10 @@
 
 .p-card {
   position: relative;
-  display: flex !important; flex-flow: column wrap;
-  align-items: center;
+  display: flex !important; flex-flow: row wrap;
+  align-items: center; justify-content: center;
   justify-content: center;
   background-color: #ffffff !important;
-  max-height: 17rem;
   // box-shadow: 1px 1px 5px 2px #1f212315;
   transition: .2s all ease-in-out;
   box-shadow: 0px 13px 20px 0px #dceaff0f;
@@ -22,9 +21,11 @@
   max-width: 100%;
   min-height: 5rem;
   max-height: 6rem;
-  align-self: center; 
   object-fit: cover;
-  // filter: grayscale(100%);
+  filter: grayscale(90%);
+  &:hover {
+    filter: grayscale(0%);
+  }
 }
 .p-card:hover {
   box-shadow: 0px 13px 20px 0px #1f21230f;
