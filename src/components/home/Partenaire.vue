@@ -1,7 +1,6 @@
 <script>
-import AppImage from '../ui/AppImage.vue'
 export default {
-  components: { AppImage },
+  components: { },
   name: 'Partenaire',
   data() {
     return {
@@ -46,10 +45,7 @@ export default {
       <div class="row">
 
         <div v-for="(part, partIndex) in partenaires" :key="partIndex" class="col-lg-4 col-md-4 col-sm-6 col-6">
-          <app-image class="p-card-img" :alt="part.alt"
-            background-color="transparent"
-            lazy-src="../../assets/img/default-img.png"
-            :lazy-srcset="(part.imgURL)" />
+          <img class="p-card-img" :src="(part.imgURL)" :alt="part.alt" />
         </div>
 
       </div>

@@ -1,9 +1,7 @@
 <script>
-// import AppImage from './AppImage.vue'
 
 export default {
   components: {
-    // AppImage
   },
   props: {
     formations: {type: Array, required: true}
@@ -22,11 +20,6 @@ export default {
       
       <!-- card-header -->
       <div class="t-card-header">
-
-        <!-- <app-image class="t-card-img"
-          background-color="#e0e7f2"
-          lazy-src="../../assets/img/default-img.png"
-          :lazy-srcset="form.url_img" :alt="`${form.name} card`" /> -->
           
         <img class="t-card-img" :src="form.url_img" alt="card-img">
 
@@ -40,9 +33,9 @@ export default {
       </div>
       <!-- card-content -->
       <div class="t-card-content">
-        <!-- <router-link :to="{name: 'detailformation', params: { form_param: form.id } }"> -->
+        <router-link :to="{name: 'detailformation', params: { form_param: form.id } }">
           <h1 class="title h5 font-weight-bold">{{ form.name }}</h1>
-        <!-- </router-link> -->
+        </router-link>
         <span class="description font-s4">
           {{ form.description ? form.description.substring(0, 100) + ".." : "--" }}
         </span>

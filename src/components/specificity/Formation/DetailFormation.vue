@@ -5,7 +5,6 @@ import FormationSimilaire from './FormationSimilaire.vue'
 import InscriptionModal from './InscriptionModal.vue'
 import SocialShareModal from './SocialShareModal.vue'
 import { store } from '../../store'
-import AppImage from '../../ui/AppImage.vue'
 
 export default {
   name: 'DetailFormation',
@@ -15,7 +14,6 @@ export default {
     FormationSimilaire,
     InscriptionModal,
     SocialShareModal,
-    AppImage
   },
   data() {
     return {
@@ -106,7 +104,6 @@ export default {
     // DATA MANIPULATION
     RemoveCurrentFormationObject(formId) {
       // supprimer la formation actuelle affiché et récupérer le reste
-      // let arr = undefined;
       this.formations_by_cat = this.formations_by_theme.filter((formation) => {
         return formation.id !== formId;
       });
@@ -136,7 +133,7 @@ export default {
       this.dataTransform.map((trans) => {
         let converted = this.TransformContent(myText, trans.symbol, trans.tag, trans.classes, trans.addition);
         myText = converted;
-        // //console.log("domId", domId);
+        //console.log("domId", domId);
       });
       // convert transformed text to HTML
       this.ConvertStringToHtml(myText, domId);
@@ -170,7 +167,7 @@ export default {
 
       let verticalPos = window.scrollY; // récupérer la position de scroll en px
       let divHeight = detailFormaHeight - formaSim.offsetHeight - contactezHeight - FooterHeight; // récupérer la taille vertical de 'div'
-      // //console.log('vert pos : ' + verticalPos + ' div height : ' + divHeight);
+      //console.log('vert pos : ' + verticalPos + ' div height : ' + divHeight);
 
       if (screen.width >= 1024) { // fixer 'card' avec les grandes écrans
         formaBanner.setAttribute('style', 'display: none !important');
@@ -277,11 +274,7 @@ export default {
         <div class="col-xl-4 col-lg-4 col-md-5 col-12 ml-auto">
           <div class="d-card" id="formationCard" v-if="formation_by_id && is_formationsByThemeLoaded">
             <div class="d-card-header">
-              <app-image class="d-card-img"
-                background-color="#e0e7f2"
-                lazy-src="../../../assets/img/default-img.png"
-                :lazy-srcset="formation_by_id.url_img"
-                :alt="`formation ${formation_by_id.name}`" />
+              <img class="d-card-img" :src="formation_by_id.url_img" :alt="`formation ${formation_by_id.name}`" />
             </div>
             <div class="d-card-content">
               <h3 class="text_bold d-inline">
